@@ -20,6 +20,13 @@ Route::get('/', 'RoomController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('room-type', 'RoomTypeController');
-Route::resource('room', 'RoomController');
 Route::resource('hotel', 'HotelController');
+Route::post('addorder', 'RoomController@addOrder');
+Route::post('editorder', 'RoomController@editOrder');
+Route::post('payorder', 'RoomController@payOrder');
+Route::get('getroominfo', 'RoomController@getroominfo');
+Route::resource('room', 'RoomController');
+Route::get('getroomtypeinfo', 'RoomTypeController@getRoomTypeInfo');
+Route::resource('roomtype', 'RoomTypeController');
+Route::get('getserviceinfo', 'ServiceController@getServiceInfo');
+Route::resource('service', 'ServiceController');

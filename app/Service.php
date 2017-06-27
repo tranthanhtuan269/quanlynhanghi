@@ -10,6 +10,8 @@ class Service extends Model
     protected $fillable = [ 'name', 'price', 'number', 
                             'id_supplier','id_hotel'];
 
+    public $timestamps = false;
+    
     public function hotel()
     {
         return $this->belongsTo(Hotel::class);

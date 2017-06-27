@@ -5,23 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\City;
-use App\Room_Type;
+use App\Service;
 use DB;
 use Response;
 
-class RoomTypeController extends Controller
+class ServiceController extends Controller
 {
-
-    /**
-     * Instantiate a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -30,11 +19,21 @@ class RoomTypeController extends Controller
     public function index()
     {
         $current_id = Auth::user()->id;
-        $roomtypes = DB::table('room_type')->select('*')->where('created_by', '=', $current_id)->get();
+        $services = DB::table('services')->select('*')->where('created_by', '=', $current_id)->get();
         $hotels =   DB::table('hotels')
                     ->leftjoin('user_hotel', 'hotels.id', '=', 'user_hotel.id_hotel')
                     ->select('hotels.id', 'hotels.name')->where('user_hotel.id_user', '=', $current_id)->get();
-        return view('roomtype.index', ['roomtypes' => $roomtypes, 'hotels' => $hotels ]);
+        return view('service.index', ['services' => $services, 'hotels' => $hotels ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -49,17 +48,13 @@ class RoomTypeController extends Controller
         $current_id = Auth::user()->id;
 
         // store
-        $roomtype = new Room_Type;
-        $roomtype->name             = $input['name_type'];
-        $roomtype->priceinroom      = $input['priceinroom'];
-        $roomtype->priceahour      = $input['priceinroom'];
-        $roomtype->priceovernight   = $input['priceovernight'];
-        $roomtype->priceaday        = $input['priceaday'];
-        $roomtype->priceaweek       = $input['priceaweek'];
-        $roomtype->priceamonth      = $input['priceamonth'];
-        $roomtype->id_hotel         = $input['id_hotel'];
-        $roomtype->created_by       = $current_id;
-        if($roomtype->save()){
+        $service                    = new Service;
+        $service->name              = $input['service_name'];
+        $service->price             = $input['service_price'];
+        $service->number            = $input['service_number'];
+        $service->id_hotel          = $input['id_hotel'];
+        $service->created_by        = $current_id;
+        if($service->save()){
             return Response::json(array('code' => '200', 'message' => 'success'));
         }
         return Response::json(array('code' => '404', 'message' => 'unsuccess'));
@@ -84,7 +79,7 @@ class RoomTypeController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**
@@ -100,17 +95,13 @@ class RoomTypeController extends Controller
         $current_id = Auth::user()->id;
 
         // update
-        $roomtype = Room_Type::find($id);
-        $roomtype->name             = $input['name_type'];
-        $roomtype->priceinroom      = $input['priceinroom'];
-        $roomtype->priceahour       = $input['priceinroom'];
-        $roomtype->priceovernight   = $input['priceovernight'];
-        $roomtype->priceaday        = $input['priceaday'];
-        $roomtype->priceaweek       = $input['priceaweek'];
-        $roomtype->priceamonth      = $input['priceamonth'];
-        $roomtype->id_hotel         = $input['id_hotel'];
-        $roomtype->created_by       = $current_id;
-        if($roomtype->save()){
+        $service = Service::find($id);
+        $service->name              = $input['service_name'];
+        $service->price             = $input['service_price'];
+        $service->number            = $input['service_number'];
+        $service->id_hotel          = $input['id_hotel'];
+        $service->created_by        = $current_id;
+        if($service->save()){
             return Response::json(array('code' => '200', 'message' => 'success'));
         }
         return Response::json(array('code' => '404', 'message' => 'unsuccess'));
@@ -127,14 +118,14 @@ class RoomTypeController extends Controller
         //
     }
 
-    public function getRoomTypeInfo()
+    public function getServiceInfo()
     {
         if(isset($_GET) && isset($_GET['id'])){
-            $roomtype = DB::table('room_type')->select('*')->where('id', '=', $_GET['id'])->first();
-            if($roomtype){
-                return Response::json(array('code' => '200', 'message' => 'success', 'room_type' => $roomtype));
+            $service = DB::table('services')->select('*')->where('id', '=', $_GET['id'])->first();
+            if($service){
+                return Response::json(array('code' => '200', 'message' => 'success', 'service' => $service));
             }
         }
-        return Response::json(array('code' => '404', 'message' => 'unsuccess', 'room_type' => null));
+        return Response::json(array('code' => '404', 'message' => 'unsuccess', 'service' => null));
     }
 }

@@ -1,13 +1,43 @@
- .product-item{
+.product-item{
  	height: 120px;
     line-height: 120px;
     text-align: center;
     background-color: #eee;
     font-size: 28px;
     cursor: pointer;
- }
+}
 
- .glyphicon-remove-circle{
+#total-order-price{
+    font-size: 18px;
+}
+
+.state-ok{
+    background-color: #007E33;
+}
+
+.state-process{
+    background-color: #ff4444;
+}
+
+.glyphicon-remove-circle{
  	color:red;
  	font-size: 18px;
- }
+}
+
+.logo{
+	margin-left: 18px;
+}
+
+.footer {
+	position: fixed;
+	right: 0;
+	left: 0;
+    bottom: 0px;
+	text-align: center;
+	background-color: #2c3742;
+    box-shadow: inset 0px 0px 3px #111;
+    color: #fff;
+    font-size: 14px;
+    line-height: 38px;
+    padding: 10px 0px 10px 0px;
+}

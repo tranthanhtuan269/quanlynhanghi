@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\City;
 use DB;
 
-class RoomTypeController extends Controller
+class SiteController extends Controller
 {
 	/**
      * Instantiate a new controller instance.

@@ -6,12 +6,17 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap -->
     <link href="{{ asset('bootstrap/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- styles -->
     <link href="{{ asset('bootstrap/css/styles.css') }}" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    <!-- sweetalert -->
+    <script src="{{ asset('sweetalert/sweetalert.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('sweetalert/sweetalert.css') }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,15 +29,15 @@
   </head>
   <body>
     <div class="header">
-         <div class="container">
+         <div class="container-fuild">
             <div class="row">
-               <div class="col-md-5">
+               <div class="col-md-5 col-lg-6">
                   <!-- Logo -->
                   <div class="logo">
                      <h1><a href="{{ url('/') }}">{{ config('app.name', 'Laravel') }}</a></h1>
                   </div>
                </div>
-               <div class="col-md-4">
+               <div class="col-md-4 col-lg-4">
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="input-group form">
@@ -44,7 +49,7 @@
                     </div>
                   </div>
                </div>
-               <div class="col-md-3">
+               <div class="col-md-3 col-lg-2">
                   <div class="navbar navbar-inverse" role="banner">
                       <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                         <ul class="nav navbar-nav">
@@ -82,26 +87,26 @@
 
     <div class="page-content">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-3 col-lg-2">
             <div class="sidebar content-box" style="display: block;">
                 <ul class="nav">
                     <!-- Main menu -->
                     <li class="current"><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> QL. khách sạn</a></li>
-                    <li><a href="{{ url('/room-type') }}"><i class="glyphicon glyphicon-calendar"></i> QL. phòng</a></li>
-                    <li><a href="{{ url('/ql-dich-vu') }}"><i class="glyphicon glyphicon-list-alt"></i> QL. dịch vụ</a></li>
+                    <li><a href="{{ url('/roomtype') }}"><i class="glyphicon glyphicon-calendar"></i> QL. phòng</a></li>
+                    <li><a href="{{ url('/service') }}"><i class="glyphicon glyphicon-list-alt"></i> QL. dịch vụ</a></li>
                     <li><a href="{{ url('/ql-giao-dich') }}"><i class="glyphicon glyphicon-calendar"></i> QL. giao dịch</a></li>
                     <li><a href="{{ url('/ql-khach-hang') }}"><i class="glyphicon glyphicon-book"></i> QL. khách hàng</a></li>
                     <li><a href="{{ url('/ql-nhan-vien') }}"><i class="glyphicon glyphicon-user"></i> QL. nhân viên</a></li>
                 </ul>
              </div>
           </div>
-          <div class="col-md-9">
+          <div class="col-md-9 col-lg-10">
             @yield('content')
           </div>
         </div>
     </div>
 
-    <footer>
+    <div class="footer">
          <div class="container">
          
             <div class="copy text-center">
@@ -109,8 +114,7 @@
             </div>
             
          </div>
-      </footer>
-
+      </div>
     
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{ asset('bootstrap/bootstrap/js/bootstrap.min.js') }}"></script>
