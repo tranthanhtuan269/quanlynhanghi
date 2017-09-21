@@ -30,3 +30,5 @@ Route::get('getroomtypeinfo', 'RoomTypeController@getRoomTypeInfo');
 Route::resource('roomtype', 'RoomTypeController');
 Route::get('getserviceinfo', 'ServiceController@getServiceInfo');
 Route::resource('service', 'ServiceController');
+
+Route::resource('order', 'OrderController');

@@ -13,9 +13,9 @@
 	  			</div>
 	  			<div class="content-box-large box-with-header">
 	  				@if(count($rooms) <= 0)
-	  					Không có phòng nào ở đây
+	  					Chưa có phòng nào được đăng ký!
 	  				@else
-	  					<div class="row">
+	  					<div class="row" id="room-list">
 							@foreach ($rooms as $room)
 								<div class="col-md-3">
 									<div id="room-{{$room->id}}" class="thumbnail product-item <?php if($room->state == 0) echo 'state-ok'; else echo 'state-process'; ?>" data-rel="order" data-toggle="modal" data-target="#order" data-id="{{$room->id}}" data-name="{{$room->name}}">
@@ -28,6 +28,7 @@
 				</div>
 			</div>
 		</div>
+		@if(sizeof($room_types) > 0)
 		<!-- Modal -->
 		<div class="modal fade" id="add-new" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog modal-lg" role="document">
@@ -95,6 +96,7 @@
 		    </div>
 		  </div>
 		</div>
+		@endif
 
 		<div class="modal fade" id="order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog modal-lg" role="document">
@@ -160,6 +162,7 @@
 						</table>
 			          </div>
 		          </div>
+		          @if(count($services) > 0)
 				  <div class="form-group">
 				  	<label for="form" class="col-sm-12">Thêm dịch vụ</label>
 				  </div>
@@ -178,6 +181,7 @@
 				      	<button type="button" class="btn btn-primary" id="add-service">Thêm</button>
 				    </div>
 				  </div>
+				  @endif
 				</form>
 		      </div>
 		      <div class="modal-footer">
@@ -189,6 +193,7 @@
 		    </div>
 		  </div>
 		</div>
+		
 		<script type="text/javascript">
 			// page room_type
 			$(document).ready(function(){
@@ -227,10 +232,10 @@
 					$('.service-pick').each(function( index ) {
 						priceOfRoom += parseInt($(this).attr('data-number')) * parseInt($(this).attr('data-price'));
 					});
-
 					// count price of room
-					priceOfRoom += parseInt($('#detail-room-price').attr('data-price'));
-
+					if(!isNaN(parseInt($('#detail-room-price').attr('data-price')))){
+						priceOfRoom += parseInt($('#detail-room-price').attr('data-price'));
+					}
 					// show price
 					$('#total-order-price').text(Number(priceOfRoom).toLocaleString('en'));
 					$('#pay-btn').prop('disabled', true);
@@ -263,36 +268,34 @@
 					  		var order_details 		= msg.order_details;
 					  		var add_data 			= "";
 					  		var total_order_price	= 0;
+				  			// set price for room
+				  			if(room_type){
+				  				$('#room-price').attr('data-priceinroom', room_type.priceinroom);
+				  				$('#room-price').attr('data-priceahour', room_type.priceahour);
+				  				$('#room-price').attr('data-priceovernight', room_type.priceovernight);
+				  				$('#room-price').attr('data-priceaday', room_type.priceaday);
+				  				$('#room-price').attr('data-priceaweek', room_type.priceaweek);
+				  				$('#room-price').attr('data-priceamonth', room_type.priceamonth);
+				  			}
 
 					  		if(room.state == 1){
-
-					  			// set price for room
-					  			if(room_type){
-					  				$('#room-price').attr('data-priceinroom', room_type.priceinroom);
-					  				$('#room-price').attr('data-priceahour', room_type.priceahour);
-					  				$('#room-price').attr('data-priceovernight', room_type.priceovernight);
-					  				$('#room-price').attr('data-priceaday', room_type.priceaday);
-					  				$('#room-price').attr('data-priceaweek', room_type.priceaweek);
-					  				$('#room-price').attr('data-priceamonth', room_type.priceamonth);
-					  			}
-
 					  			if(order != null){
 						  			$('input[name="typeOrder"][value="' + room.order_type + '"]').prop('checked', true);
 						  			// show value for room
 						  			if(room.order_type == 0){
-						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0' data-price='" + room_type.priceinroom + "'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price' data-price='" + room_type.priceinroom + "'>" + Number(room_type.priceinroom).toLocaleString('en') + "</span></td><td></td></tr>";
+						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price' data-price='" + room_type.priceinroom + "' data-price='" + room_type.priceinroom + "'>" + Number(room_type.priceinroom).toLocaleString('en') + "</span></td><td></td></tr>";
 						  				total_order_price += room_type.priceinroom;
 						  			}else if(room.order_type == 1){
-						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0' data-price='" + room_type.priceovernight + "'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price'>" + Number(room_type.priceovernight).toLocaleString('en') + "</span></td><td></td></tr>";
+						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price' data-price='" + room_type.priceovernight + "'>" + Number(room_type.priceovernight).toLocaleString('en') + "</span></td><td></td></tr>";
 						  				total_order_price += room_type.priceovernight;
 						  			}else if(room.order_type == 2){
-						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0' data-price='" + room_type.priceaday + "'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price' data-price='" + room_type.priceaday + "'>" + Number(room_type.priceaday).toLocaleString('en') + "</span></td><td></td></tr>";
+						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price' data-price='" + room_type.priceaday + "' data-price='" + room_type.priceaday + "'>" + Number(room_type.priceaday).toLocaleString('en') + "</span></td><td></td></tr>";
 						  				total_order_price += room_type.priceaday;
 						  			}else if(room.order_type == 3){
-						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0' data-price='" + room_type.priceaweek + "'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price' data-price='" + room_type.priceaweek + "'>" + Number(room_type.priceaweek).toLocaleString('en') + "</span></td><td></td></tr>";
+						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price' data-price='" + room_type.priceaweek + "' data-price='" + room_type.priceaweek + "'>" + Number(room_type.priceaweek).toLocaleString('en') + "</span></td><td></td></tr>";
 						  				total_order_price += room_type.priceaweek;
 						  			}else if(room.order_type == 4){
-						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0' data-price='" + room_type.priceamonth + "'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price' data-price='" + room_type.priceamonth + "'>" + Number(room_type.priceamonth).toLocaleString('en') + "</span></td><td></td></tr>";
+						  				add_data += "<tr class='detail-room-price' data-id='0' data-number='0'><td>1</td><td>Tiền phòng</td><td>1</td><td><span id='detail-room-price' class='price' data-price='" + room_type.priceamonth + "' data-price='" + room_type.priceamonth + "'>" + Number(room_type.priceamonth).toLocaleString('en') + "</span></td><td></td></tr>";
 						  				total_order_price += room_type.priceamonth;
 						  			}
 
@@ -338,7 +341,6 @@
 					  			$('#pay-btn').hide();
 					  			$('#accept-btn').show();
 					  		}
-
 					  		// change data price service room
 					  		$('#priceinroom').attr('data-priceinroom', room_type.priceinroom);
 					  		$('#priceovernight').attr('data-priceovernight', room_type.priceovernight);
@@ -359,6 +361,7 @@
 					var room_id = $('#order-room-id').val();
 					var services_list = $('#services-list').val();
 					var type_order = $( 'input[name=typeOrder]:checked' ).val();
+					var room_name = $('#room-name').html();
 
 					var request_add_order = $.ajax({
 				  		headers: {
@@ -369,6 +372,7 @@
 						data: 
 						{ 
 							'room_id' : room_id,
+							'room_name' : room_name,
 							'room_services' : services_list,
 							'type_order' : type_order
 						},
@@ -501,10 +505,14 @@
 					});
 				});
 
-				$(".product-item").click(function(){
-					$("#order-room-id").val($(this).data('id'));
-					$("#room-name").text($(this).data('name'));
-				});
+				function addClickForProduct(){
+					$(".product-item").click(function(){
+						$("#order-room-id").val($(this).data('id'));
+						$("#room-name").text($(this).data('name'));
+					});
+				}
+
+				addClickForProduct();
 
 				// add room
 				$('#add-room').click(function(){
@@ -531,6 +539,16 @@
 						  if(msg.code == 200){
 						  	swal("Thông báo", "Phòng đã được tạo thành công!", "success");
 						  	$('#add-new').modal('toggle');
+						  	var room = msg.room;
+						  	var html  = '';
+						  		html += '<div class="col-md-3">';
+						  		html += '<div id="room-' + room.id + '" class="thumbnail product-item state-ok" data-rel="order" data-toggle="modal" data-target="#order" data-id="' + room.id + '" data-name="' + room.name + '">';
+								html += room.name;
+					    		html += '</div>';
+								html += '</div>';
+							$('#room-list').append(html);
+
+							addClickForProduct();
 						  }else{
 						  	swal("Cảnh báo", "Đã có lỗi khi tạo một phòng mới!", "error");
 						  }

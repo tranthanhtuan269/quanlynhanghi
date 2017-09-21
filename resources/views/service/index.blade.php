@@ -13,12 +13,12 @@
 	  			</div>
 	  			<div class="content-box-large box-with-header">
 	  				@if(count($services) <= 0)
-	  					Không có kiểu phòng nào ở đây
+	  					Chưa có dịch vụ nào được đăng ký!
 	  				@else
-	  					<div class="row">
+	  					<div class="row" id="service-list">
 							@foreach ($services as $service)
 								<div class="col-md-3">
-									<div class="thumbnail product-item" data-rel="edit" data-toggle="modal" data-target="#edit" data-id="{{$service->id}}">
+									<div class="thumbnail product-item state-ok" data-rel="edit" data-toggle="modal" data-target="#edit" data-id="{{$service->id}}">
 										{{$service->name}}
 						    		</div>
 								</div>
@@ -224,6 +224,15 @@
 					  	if(msg.code == 200){
 						  	swal("Thông báo", "Dịch vụ đã được tạo thành công!", "success");
 						  	$('#add-new').modal('toggle');
+
+						  	var service = msg.service;
+						  	var html  = '';
+						  		html += '<div class="col-md-3">';
+						  		html += '<div class="thumbnail product-item state-ok" data-rel="edit" data-toggle="modal" data-target="#edit" data-id="'+ service.id +'">';
+								html += service.name;
+					    		html += '</div>';
+								html += '</div>';
+							$('#service-list').append(html);
 						  }else{
 						  	swal("Cảnh báo", "Đã có lỗi khi tạo một dịch vụ mới!", "error");
 						  }

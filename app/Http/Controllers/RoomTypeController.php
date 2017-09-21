@@ -52,7 +52,7 @@ class RoomTypeController extends Controller
         $roomtype = new Room_Type;
         $roomtype->name             = $input['name_type'];
         $roomtype->priceinroom      = $input['priceinroom'];
-        $roomtype->priceahour      = $input['priceinroom'];
+        $roomtype->priceahour       = $input['priceinhour'];
         $roomtype->priceovernight   = $input['priceovernight'];
         $roomtype->priceaday        = $input['priceaday'];
         $roomtype->priceaweek       = $input['priceaweek'];
@@ -60,7 +60,7 @@ class RoomTypeController extends Controller
         $roomtype->id_hotel         = $input['id_hotel'];
         $roomtype->created_by       = $current_id;
         if($roomtype->save()){
-            return Response::json(array('code' => '200', 'message' => 'success'));
+            return Response::json(array('code' => '200', 'message' => 'success', 'roomtype' => $roomtype));
         }
         return Response::json(array('code' => '404', 'message' => 'unsuccess'));
     }
@@ -103,7 +103,7 @@ class RoomTypeController extends Controller
         $roomtype = Room_Type::find($id);
         $roomtype->name             = $input['name_type'];
         $roomtype->priceinroom      = $input['priceinroom'];
-        $roomtype->priceahour       = $input['priceinroom'];
+        $roomtype->priceahour       = $input['priceinhour'];
         $roomtype->priceovernight   = $input['priceovernight'];
         $roomtype->priceaday        = $input['priceaday'];
         $roomtype->priceaweek       = $input['priceaweek'];

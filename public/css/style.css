@@ -12,11 +12,20 @@
 }
 
 .state-ok{
-    background-color: #007E33;
+    background-color: #00C851;
 }
 
 .state-process{
     background-color: #ff4444;
+}
+
+.room-type-ok{
+    color: #ffffff;
+    background-color: #9933CC;   
+}
+
+.coin{
+    font-size: 13px;
 }
 
 .glyphicon-remove-circle{

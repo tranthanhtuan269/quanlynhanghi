@@ -8,7 +8,7 @@ class Order extends Model
 {
     protected $table = "orders";
     protected $fillable = [ 'room_id', 'customer_id', 'created_by', 
-                            'created_at', 'state', 'updated_at'];
+                            'created_at', 'state', 'price_order', 'updated_at'];
 
     public $timestamps = false;
 }

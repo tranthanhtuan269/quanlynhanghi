@@ -55,7 +55,7 @@ class ServiceController extends Controller
         $service->id_hotel          = $input['id_hotel'];
         $service->created_by        = $current_id;
         if($service->save()){
-            return Response::json(array('code' => '200', 'message' => 'success'));
+            return Response::json(array('code' => '200', 'message' => 'success', 'service' => $service));
         }
         return Response::json(array('code' => '404', 'message' => 'unsuccess'));
     }
