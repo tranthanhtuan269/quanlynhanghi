@@ -17,7 +17,11 @@
 	  				@else
 	  					<div class="row" id="room-list">
 							@foreach ($rooms as $room)
+								@if(count($rooms) > 12)
+								<div class="col-md-2">
+								@else
 								<div class="col-md-3">
+								@endif
 									<div id="room-{{$room->id}}" class="thumbnail product-item <?php if($room->state == 0) echo 'state-ok'; else echo 'state-process'; ?>" data-rel="order" data-toggle="modal" data-target="#order" data-id="{{$room->id}}" data-name="{{$room->name}}">
 										{{$room->name}}
 						    		</div>

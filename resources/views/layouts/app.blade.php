@@ -6,7 +6,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap -->
     <link href="{{ asset('bootstrap/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- styles -->
@@ -95,8 +94,10 @@
                     <li><a href="{{ url('/roomtype') }}"><i class="glyphicon glyphicon-calendar"></i> QL. phòng</a></li>
                     <li><a href="{{ url('/service') }}"><i class="glyphicon glyphicon-list-alt"></i> QL. dịch vụ</a></li>
                     <li><a href="{{ url('/order') }}"><i class="glyphicon glyphicon-calendar"></i> QL. giao dịch</a></li>
+                    @if(false)
                     <li><a href="{{ url('/ql-khach-hang') }}"><i class="glyphicon glyphicon-book"></i> QL. khách hàng</a></li>
                     <li><a href="{{ url('/ql-nhan-vien') }}"><i class="glyphicon glyphicon-user"></i> QL. nhân viên</a></li>
+                    @endif
                 </ul>
              </div>
           </div>

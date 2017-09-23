@@ -95,8 +95,10 @@
                     <li><a href="{{ url('/room-type') }}"><i class="glyphicon glyphicon-calendar"></i> QL. phòng</a></li>
                     <li><a href="{{ url('/ql-dich-vu') }}"><i class="glyphicon glyphicon-list-alt"></i> QL. dịch vụ</a></li>
                     <li><a href="{{ url('/ql-giao-dich') }}"><i class="glyphicon glyphicon-calendar"></i> QL. giao dịch</a></li>
+                    @if(false)
                     <li><a href="{{ url('/ql-khach-hang') }}"><i class="glyphicon glyphicon-book"></i> QL. khách hàng</a></li>
                     <li><a href="{{ url('/ql-nhan-vien') }}"><i class="glyphicon glyphicon-user"></i> QL. nhân viên</a></li>
+                    @endif
                 </ul>
              </div>
           </div>
