@@ -9,3 +9,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 .env
+sitemap.xml
+/public/sitemap.xml
