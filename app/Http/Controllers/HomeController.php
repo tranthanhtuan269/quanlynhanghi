@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -60,6 +61,7 @@ class HomeController extends Controller
             }
         }
 
+        Storage::put('file.txt', date("Y-m-d H:i:s"));
         return 'done';
     }
 }
