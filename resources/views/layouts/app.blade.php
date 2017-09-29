@@ -90,7 +90,7 @@
             <div class="sidebar content-box" style="display: block;">
                 <ul class="nav">
                     <!-- Main menu -->
-                    <li class="current"><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> QL. khách sạn</a></li>
+                    <li class="current"><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> QL. nhà nghỉ</a></li>
                     <li><a href="{{ url('/roomtype') }}"><i class="glyphicon glyphicon-calendar"></i> QL. phòng</a></li>
                     <li><a href="{{ url('/service') }}"><i class="glyphicon glyphicon-list-alt"></i> QL. dịch vụ</a></li>
                     <li><a href="{{ url('/order') }}"><i class="glyphicon glyphicon-calendar"></i> QL. giao dịch</a></li>

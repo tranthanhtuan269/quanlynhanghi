@@ -19,7 +19,8 @@
 							@foreach ($services as $service)
 								<div class="col-md-3">
 									<div class="thumbnail product-item state-ok" data-rel="edit" data-toggle="modal" data-target="#edit" data-id="{{$service->id}}">
-										{{$service->name}}
+										<span class="service-name"> {{$service->name}} </span>
+										<span class="service-number"> {{$service->number}} </span>
 						    		</div>
 								</div>
 							@endforeach

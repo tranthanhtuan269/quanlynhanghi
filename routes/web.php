@@ -20,6 +20,7 @@ Route::get('/', 'RoomController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/test', 'HomeController@countServiceSellInDay')->name('test');
 Route::resource('hotel', 'HotelController');
 Route::post('addorder', 'RoomController@addOrder');
 Route::post('editorder', 'RoomController@editOrder');

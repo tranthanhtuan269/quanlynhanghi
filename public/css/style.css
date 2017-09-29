@@ -7,6 +7,21 @@
     cursor: pointer;
 }
 
+.product-item .service-name{
+    color:#333;
+    display: block;
+    width: 100%;
+    line-height: 68px;
+}
+
+.product-item .service-number{
+    color:#3328da;
+    display: block;
+    width: 100%;
+    line-height: 38px;
+}
+
+
 #total-order-price{
     font-size: 18px;
 }
