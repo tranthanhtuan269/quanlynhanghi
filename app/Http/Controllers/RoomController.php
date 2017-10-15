@@ -68,7 +68,6 @@ class RoomController extends Controller
         $room->name         = $input['room_name'];
         $room->room_type    = $input['room_type'];
         $room->state = 0;
-        $room->id_hotel     = $current_id;
         $room->created_by   = $current_id;
         if($room->save()){
             return Response::json(array('code' => '200', 'message' => 'success', 'room' => $room));
@@ -128,7 +127,6 @@ class RoomController extends Controller
             $room = Room::find($id);
             if($room){
                 $room_type = DB::table('room_type')->select('*')->where('id', '=', $room->room_type)->first();
-                $hotel = DB::table('rooms')->select('id_hotel')->where('id', '=', $id)->first();
                 $order = DB::table('orders')->select('*')->where([['room_id', '=', $id], ['state', '=', '1']])->first();
                 if($order){
                     $order_details = DB::table('order_detail')

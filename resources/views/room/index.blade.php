@@ -13,7 +13,7 @@
 	  			</div>
 	  			<div class="content-box-large box-with-header">
 	  				@if(count($rooms) <= 0)
-	  					Chưa có phòng nào được đăng ký!
+	  					Chưa có phòng nào được tạo!
 	  				@else
 	  					<div class="row" id="room-list">
 							@foreach ($rooms as $room)
@@ -541,18 +541,15 @@
 						 
 						request_add_room.done(function( msg ) {
 						  if(msg.code == 200){
-						  	swal("Thông báo", "Phòng đã được tạo thành công!", "success");
-						  	$('#add-new').modal('toggle');
-						  	var room = msg.room;
-						  	var html  = '';
-						  		html += '<div class="col-md-3">';
-						  		html += '<div id="room-' + room.id + '" class="thumbnail product-item state-ok" data-rel="order" data-toggle="modal" data-target="#order" data-id="' + room.id + '" data-name="' + room.name + '">';
-								html += room.name;
-					    		html += '</div>';
-								html += '</div>';
-							$('#room-list').append(html);
-
-							addClickForProduct();
+							swal({	
+						  		title: 	"Thông báo", 
+						  		text: 	"Phòng đã được tạo thành công!", 
+						  		type: 	"success"
+						  	},
+						  	function(){
+							    location.reload();
+							});
+							$('#add-new').modal('toggle');
 						  }else{
 						  	swal("Cảnh báo", "Đã có lỗi khi tạo một phòng mới!", "error");
 						  }

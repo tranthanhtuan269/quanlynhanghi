@@ -78,17 +78,6 @@
 				      <input type="text" class="form-control" id="priceamonth" placeholder="Giá 1 tháng">
 				    </div>
 				  </div>
-				  <hr />
-				  <div class="form-group">
-				    <label for="priceaweek" class="col-sm-3 control-label">Thuộc khách sạn</label>
-				    <div class="col-sm-9">
-				      	<select class="form-control" id="id_hotel">
-				      		@foreach ($hotels as $hotel)
-								<option value="{{$hotel->id}}">{{$hotel->name}}</option>
-							@endforeach
-						</select>
-				    </div>
-				  </div>
 				</form>
 		      </div>
 		      <div class="modal-footer">
@@ -146,17 +135,6 @@
 				    <label for="priceamonth" class="col-sm-2 control-label">1 tháng </label>
 				    <div class="col-sm-4">
 				      <input type="text" class="form-control" id="priceamonth" placeholder="Giá 1 tháng">
-				    </div>
-				  </div>
-				  <hr />
-				  <div class="form-group">
-				    <label for="priceaweek" class="col-sm-3 control-label">Thuộc khách sạn</label>
-				    <div class="col-sm-9">
-				      	<select class="form-control" id="id_hotel">
-				      		@foreach ($hotels as $hotel)
-								<option value="{{$hotel->id}}">{{$hotel->name}}</option>
-							@endforeach
-						</select>
 				    </div>
 				  </div>
 				</form>

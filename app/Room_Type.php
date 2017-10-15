@@ -15,7 +15,6 @@ class Room_Type extends Model
                             'priceaday',
                             'priceaweek',
                             'priceamonth', 
-                            'id_hotel', 
                             'created_by'
                             ];
 

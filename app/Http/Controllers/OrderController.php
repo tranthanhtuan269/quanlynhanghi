@@ -28,24 +28,23 @@ class OrderController extends Controller
 
         $current_id = Auth::user()->id;
         $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $current_id)->get();
-
         // $dataid = [];
         $room_list = "";
-        foreach ($rooms as $room) {
-            // $dataid[] = $room->id;
-            $room_list .= $room->id . ',';
+        $order_list = array();
+        if(count($rooms) > 0){
+            foreach ($rooms as $room) {
+                $room_list .= $room->id . ',';
+            }
+
+            $room_list = rtrim($room_list,",");
+
+            $order_list = DB::select("
+                                    SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price' 
+                                    FROM orders 
+                                    WHERE room_id IN (" . $room_list . ") 
+                                    GROUP BY CAST(updated_at AS DATE)
+                                ");
         }
-
-        $room_list = rtrim($room_list,",");
-
-        $order_list = DB::select("
-                                SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price' 
-                                FROM quanlykhachsan.orders 
-                                WHERE room_id IN (" . $room_list . ") 
-                                GROUP BY CAST(updated_at AS DATE)
-                            ");
-
-        
         
         return view('order.index', [ 'order_list' => $order_list ]);
     }

@@ -13,12 +13,12 @@
 	  			</div>
 	  			<div class="content-box-large box-with-header">
 	  				@if(count($roomtypes) <= 0)
-	  					Chưa có kiểu phòng nào được đăng ký!
+	  					Chưa có kiểu phòng nào được tạo!
 	  				@else
 	  					<div class="row" id="roomtype-list">
 							@foreach ($roomtypes as $room)
 								<div class="col-md-3">
-									<div class="thumbnail product-item room-type-ok" data-rel="edit" data-toggle="modal" data-target="#edit" data-id="{{$room->id}}">
+									<div class="thumbnail product-item room-type-ok" data-rel="edit" data-toggle="modal" data-target="#edit" data-id="{{$room->id}}" id="room-{{$room->id}}">
 										{{$room->name}}
 						    		</div>
 								</div>
@@ -76,17 +76,6 @@
 				    <label for="priceamonth" class="col-sm-2 control-label">1 tháng </label>
 				    <div class="col-sm-4">
 				      <input type="text" class="form-control" id="priceamonth" placeholder="Giá 1 tháng">
-				    </div>
-				  </div>
-				  <hr />
-				  <div class="form-group">
-				    <label for="priceaweek" class="col-sm-3 control-label">Thuộc khách sạn</label>
-				    <div class="col-sm-9">
-				      	<select class="form-control" id="id_hotel">
-				      		@foreach ($hotels as $hotel)
-								<option value="{{$hotel->id}}">{{$hotel->name}}</option>
-							@endforeach
-						</select>
 				    </div>
 				  </div>
 				</form>
@@ -149,17 +138,6 @@
 				      <input type="text" class="form-control" id="edit_priceamonth" placeholder="Giá 1 tháng">
 				    </div>
 				  </div>
-				  <hr />
-				  <div class="form-group">
-				    <label for="priceaweek" class="col-sm-3 control-label">Thuộc khách sạn</label>
-				    <div class="col-sm-9">
-				      	<select class="form-control" id="edit_id_hotel">
-				      		@foreach ($hotels as $hotel)
-								<option value="{{$hotel->id}}">{{$hotel->name}}</option>
-							@endforeach
-						</select>
-				    </div>
-				  </div>
 				</form>
 		      </div>
 		      <div class="modal-footer">
@@ -191,6 +169,7 @@
 					request_get_info_type.done(function( msg ) {
 					  	if(msg.code == 200){
 						  	var roomtype = msg.room_type;
+						  	$('#room-' + id).html(roomtype.name);
 						  	$('#edit_name_txt').val(roomtype.name);
 						  	$('#edit_priceinroom').val(roomtype.priceinroom);
 						  	$('#edit_priceinhour').val(roomtype.priceahour);
@@ -216,7 +195,6 @@
 					var edit_priceaday 		= $('#edit_priceaday').val();
 					var edit_priceaweek 	= $('#edit_priceaweek').val();
 					var edit_priceamonth 	= $('#edit_priceamonth').val();
-					var edit_id_hotel 		= $('#edit_id_hotel').val();
 
 					var request_edit_room_type = $.ajax({
 				  		headers: {
@@ -233,15 +211,21 @@
 							'priceovernight' 	: edit_priceovernight,
 							'priceaday' 		: edit_priceaday,
 							'priceaweek' 		: edit_priceaweek,
-							'priceamonth' 		: edit_priceamonth,
-							'id_hotel' 			: edit_id_hotel
+							'priceamonth' 		: edit_priceamonth
 						},
 						dataType: "json"
 					});
 					 
 					request_edit_room_type.done(function( msg ) {
 					  	if(msg.code == 200){
-						  	swal("Thông báo", "Kiểu phòng đã được sửa thành công!", "success");
+						  	swal({	
+						  		title: 	"Thông báo", 
+						  		text: 	"Kiểu phòng đã được sửa thành công!", 
+						  		type: 	"success"
+						  	},
+						  	function(){
+							    location.reload();
+							});
 						  	$('#edit').modal('toggle');
 						  }else{
 						  	swal("Cảnh báo", "Đã có lỗi khi sửa kiểu phòng!", "error");
@@ -262,7 +246,6 @@
 					var priceaday = $('#priceaday').val();
 					var priceaweek = $('#priceaweek').val();
 					var priceamonth = $('#priceamonth').val();
-					var id_hotel = $('#id_hotel').val();
 
 					var request_add_room_type = $.ajax({
 				  		headers: {
@@ -278,25 +261,22 @@
 							'priceovernight' : priceovernight,
 							'priceaday' : priceaday,
 							'priceaweek' : priceaweek,
-							'priceamonth' : priceamonth,
-							'id_hotel' : id_hotel
+							'priceamonth' : priceamonth
 						},
 						dataType: "json"
 					});
 					 
 					request_add_room_type.done(function( msg ) {
 					  	if(msg.code == 200){
-						  	swal("Thông báo", "Kiểu phòng đã được tạo thành công!", "success");
-						  	$('#add-new').modal('toggle');
-
-						  	var roomtype = msg.roomtype;
-						  	var html  = '';
-						  		html += '<div class="col-md-3">';
-						  		html += '<div class="thumbnail product-item room-type-ok" data-rel="edit" data-toggle="modal" data-target="#edit" data-id="' + roomtype.id + '">';
-								html += roomtype.name;
-					    		html += '</div>';
-								html += '</div>';
-							$('#roomtype-list').append(html);
+							swal({	
+						  		title: 	"Thông báo", 
+						  		text: 	"Kiểu phòng đã được tạo thành công!", 
+						  		type: 	"success"
+						  	},
+						  	function(){
+							    location.reload();
+							});
+							$('#add-new').modal('toggle');
 						  }else{
 						  	swal("Cảnh báo", "Đã có lỗi khi tạo một kiểu phòng mới!", "error");
 						  }

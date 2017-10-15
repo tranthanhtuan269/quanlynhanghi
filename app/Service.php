@@ -8,7 +8,7 @@ class Service extends Model
 {
     protected $table = "services";
     protected $fillable = [ 'name', 'price', 'number', 
-                            'id_supplier','id_hotel'];
+                            'id_supplier', 'created_by'];
 
     public $timestamps = false;
     

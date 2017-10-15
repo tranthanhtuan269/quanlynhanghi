@@ -8,7 +8,7 @@ class Supplier extends Model
 {
     protected $table = "suppliers";
     protected $fillable = [ 'name', 'price', 'number', 
-                            'id_supplier','id_hotel'];
+                            'id_supplier'];
 
     public function hotel()
     {

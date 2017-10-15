@@ -31,10 +31,7 @@ class RoomTypeController extends Controller
     {
         $current_id = Auth::user()->id;
         $roomtypes = DB::table('room_type')->select('*')->where('created_by', '=', $current_id)->get();
-        $hotels =   DB::table('hotels')
-                    ->leftjoin('user_hotel', 'hotels.id', '=', 'user_hotel.id_hotel')
-                    ->select('hotels.id', 'hotels.name')->where('user_hotel.id_user', '=', $current_id)->get();
-        return view('roomtype.index', ['roomtypes' => $roomtypes, 'hotels' => $hotels ]);
+        return view('roomtype.index', ['roomtypes' => $roomtypes ]);
     }
 
     /**
@@ -57,7 +54,6 @@ class RoomTypeController extends Controller
         $roomtype->priceaday        = $input['priceaday'];
         $roomtype->priceaweek       = $input['priceaweek'];
         $roomtype->priceamonth      = $input['priceamonth'];
-        $roomtype->id_hotel         = $input['id_hotel'];
         $roomtype->created_by       = $current_id;
         if($roomtype->save()){
             return Response::json(array('code' => '200', 'message' => 'success', 'roomtype' => $roomtype));
@@ -108,7 +104,6 @@ class RoomTypeController extends Controller
         $roomtype->priceaday        = $input['priceaday'];
         $roomtype->priceaweek       = $input['priceaweek'];
         $roomtype->priceamonth      = $input['priceamonth'];
-        $roomtype->id_hotel         = $input['id_hotel'];
         $roomtype->created_by       = $current_id;
         if($roomtype->save()){
             return Response::json(array('code' => '200', 'message' => 'success'));

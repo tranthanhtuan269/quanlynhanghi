@@ -11,7 +11,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Styles -->
-        <link href="{{ url('/') }}/css/app.css" rel="stylesheet">
+        <link href="{{ url('/') }}/public/css/app.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- Scripts -->
@@ -97,7 +97,7 @@
         </div>
 
         <!-- Scripts -->
-        <script src="{{ url('/') }}/js/app.js"></script>
+        <script src="{{ url('/') }}/public/js/app.js"></script>
 
         <script type="text/javascript">
             $(function () {

@@ -20,10 +20,7 @@ class ServiceController extends Controller
     {
         $current_id = Auth::user()->id;
         $services = DB::table('services')->select('*')->where('created_by', '=', $current_id)->get();
-        $hotels =   DB::table('hotels')
-                    ->leftjoin('user_hotel', 'hotels.id', '=', 'user_hotel.id_hotel')
-                    ->select('hotels.id', 'hotels.name')->where('user_hotel.id_user', '=', $current_id)->get();
-        return view('service.index', ['services' => $services, 'hotels' => $hotels ]);
+        return view('service.index', ['services' => $services ]);
     }
 
     /**
@@ -52,7 +49,6 @@ class ServiceController extends Controller
         $service->name              = $input['service_name'];
         $service->price             = $input['service_price'];
         $service->number            = $input['service_number'];
-        $service->id_hotel          = $input['id_hotel'];
         $service->created_by        = $current_id;
         if($service->save()){
             return Response::json(array('code' => '200', 'message' => 'success', 'service' => $service));
@@ -99,7 +95,6 @@ class ServiceController extends Controller
         $service->name              = $input['service_name'];
         $service->price             = $input['service_price'];
         $service->number            = $input['service_number'];
-        $service->id_hotel          = $input['id_hotel'];
         $service->created_by        = $current_id;
         if($service->save()){
             return Response::json(array('code' => '200', 'message' => 'success'));

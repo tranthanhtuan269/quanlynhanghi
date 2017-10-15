@@ -57,17 +57,6 @@
 				      <input type="text" class="form-control" id="number_txt" placeholder="Số lượng còn lại">
 				    </div>
 				  </div>
-				  <hr />
-				  <div class="form-group">
-				    <label for="id_hotel" class="col-sm-3 control-label">Thuộc khách sạn</label>
-				    <div class="col-sm-9">
-				      	<select class="form-control" id="id_hotel">
-				      		@foreach ($hotels as $hotel)
-								<option value="{{$hotel->id}}">{{$hotel->name}}</option>
-							@endforeach
-						</select>
-				    </div>
-				  </div>
 				</form>
 		      </div>
 		      <div class="modal-footer">
@@ -104,17 +93,6 @@
 				    <label for="edit_number_txt" class="col-sm-3 control-label">Số lượng còn lại</label>
 				    <div class="col-sm-9">
 				      <input type="text" class="form-control" id="edit_number_txt" placeholder="Số lượng còn lại">
-				    </div>
-				  </div>
-				  <hr />
-				  <div class="form-group">
-				    <label for="id_hotel" class="col-sm-3 control-label">Thuộc khách sạn</label>
-				    <div class="col-sm-9">
-				      	<select class="form-control" id="edit_id_hotel">
-				      		@foreach ($hotels as $hotel)
-								<option value="{{$hotel->id}}">{{$hotel->name}}</option>
-							@endforeach
-						</select>
 				    </div>
 				  </div>
 				</form>
@@ -165,7 +143,6 @@
 					var edit_service_name 		= $('#edit_name_txt').val();
 					var edit_service_price	 	= $('#edit_price_txt').val();
 					var edit_service_number 	= $('#edit_number_txt').val();
-					var edit_id_hotel 			= $('#edit_id_hotel').val();
 
 					var request_edit_service_type = $.ajax({
 				  		headers: {
@@ -178,15 +155,21 @@
 							'service_id' 			: edit_service_id,
 							'service_name' 			: edit_service_name,
 							'service_price' 		: edit_service_price,
-							'service_number' 		: edit_service_number,
-							'id_hotel' 				: edit_id_hotel
+							'service_number' 		: edit_service_number
 						},
 						dataType: "json"
 					});
 					 
 					request_edit_service_type.done(function( msg ) {
 					  	if(msg.code == 200){
-						  	swal("Thông báo", "Dịch vụ đã được sửa thành công!", "success");
+						  	swal({	
+						  		title: 	"Thông báo", 
+						  		text: 	"Dịch vụ đã được sửa thành công!", 
+						  		type: 	"success"
+						  	},
+						  	function(){
+							    location.reload();
+							});
 						  	$('#edit').modal('toggle');
 						  }else{
 						  	swal("Cảnh báo", "Đã có lỗi khi sửa dịch vụ!", "error");
@@ -203,7 +186,6 @@
 					var service_name 		= $('#name_txt').val();
 					var service_price	 	= $('#price_txt').val();
 					var service_number 		= $('#number_txt').val();
-					var id_hotel 			= $('#id_hotel').val();
 
 					var request_add_service_type = $.ajax({
 				  		headers: {
@@ -215,25 +197,22 @@
 						{ 
 							'service_name' 		: service_name,
 							'service_price' 	: service_price,
-							'service_number' 	: service_number,
-							'id_hotel' 			: id_hotel
+							'service_number' 	: service_number
 						},
 						dataType: "json"
 					});
 					 
 					request_add_service_type.done(function( msg ) {
 					  	if(msg.code == 200){
-						  	swal("Thông báo", "Dịch vụ đã được tạo thành công!", "success");
+						  	swal({	
+						  		title: 	"Thông báo", 
+						  		text: 	"Dịch vụ đã được tạo thành công!", 
+						  		type: 	"success"
+						  	},
+						  	function(){
+							    location.reload();
+							});
 						  	$('#add-new').modal('toggle');
-
-						  	var service = msg.service;
-						  	var html  = '';
-						  		html += '<div class="col-md-3">';
-						  		html += '<div class="thumbnail product-item state-ok" data-rel="edit" data-toggle="modal" data-target="#edit" data-id="'+ service.id +'">';
-								html += service.name;
-					    		html += '</div>';
-								html += '</div>';
-							$('#service-list').append(html);
 						  }else{
 						  	swal("Cảnh báo", "Đã có lỗi khi tạo một dịch vụ mới!", "error");
 						  }
