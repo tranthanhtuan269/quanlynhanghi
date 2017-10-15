@@ -68,10 +68,6 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'ip_address' => \Request::ip(),
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'phone' => $data['phone'],
-            'address' => $data['address'],
         ]);
     }
 }
