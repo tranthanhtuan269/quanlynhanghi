@@ -7,15 +7,15 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="{{ asset('bootstrap/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url('/') }}/public/bootstrap/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- styles -->
-    <link href="{{ asset('bootstrap/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ url('/') }}/public/bootstrap/css/styles.css" rel="stylesheet">
     <!-- Styles -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ url('/') }}/public/css/style.css" rel="stylesheet">
 
     <!-- sweetalert -->
-    <script src="{{ asset('sweetalert/sweetalert.min.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('sweetalert/sweetalert.css') }}">
+    <script src="{{ url('/') }}/public/sweetalert/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url('/') }}/public/sweetalert/sweetalert.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -118,7 +118,7 @@
       </div>
     
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{ asset('bootstrap/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('bootstrap/js/custom.js') }}"></script>
+    <script src="{{ url('/') }}/public/bootstrap/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{ url('/') }}/public/bootstrap/js/custom.js"></script>
   </body>
 </html>
