@@ -42,8 +42,6 @@ class OrderController extends Controller
                                     WHERE room_id IN (" . $room_list . ") 
                                     GROUP BY CAST(updated_at AS DATE)
                                 ");
-
-            dd($order_list);
         }
         
         return view('order.index2', [ 'order_list' => $order_list ]);
