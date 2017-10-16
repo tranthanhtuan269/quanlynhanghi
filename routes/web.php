@@ -26,16 +26,18 @@ Route::post('addorder', 'RoomController@addOrder');
 Route::post('editorder', 'RoomController@editOrder');
 Route::post('payorder', 'RoomController@payOrder');
 Route::get('getroominfo', 'RoomController@getroominfo');
-Route::resource('room', 'RoomController');
 Route::get('getroomtypeinfo', 'RoomTypeController@getRoomTypeInfo');
-Route::resource('roomtype', 'RoomTypeController');
 Route::get('getserviceinfo', 'ServiceController@getServiceInfo');
+
+Route::resource('room', 'RoomController');
+Route::resource('roomtype', 'RoomTypeController');
 Route::resource('service', 'ServiceController');
 Route::resource('order', 'OrderController');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
    	
-Route::group(['namespace' => 'admin', 'prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' => 'admin'], function () {
+Route::group(['middleware' => ['auth', 'roles'], 'roles' => 'admin'], function () {
 	Route::get('admin', 'Admin\AdminController@index');
 	Route::get('admin/give-role-permissions', 'Admin\AdminController@getGiveRolePermissions');
 	Route::post('admin/give-role-permissions', 'Admin\AdminController@postGiveRolePermissions');

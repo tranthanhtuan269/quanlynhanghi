@@ -24,8 +24,6 @@ class OrderController extends Controller
      */
     public function index()
     {
-
-
         $current_id = Auth::user()->id;
         $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $current_id)->get();
         // $dataid = [];
@@ -44,9 +42,11 @@ class OrderController extends Controller
                                     WHERE room_id IN (" . $room_list . ") 
                                     GROUP BY CAST(updated_at AS DATE)
                                 ");
+
+            dd($order_list);
         }
         
-        return view('order.index', [ 'order_list' => $order_list ]);
+        return view('order.index2', [ 'order_list' => $order_list ]);
     }
 
     /**

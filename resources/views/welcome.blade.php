@@ -35,7 +35,7 @@
                <div class="col-md-4">
                   <div class="row">
                     <div class="col-lg-12">
-                      <div class="input-group form">
+                      <div class="input-group form" style="display: none;">
                            <input type="text" class="form-control" placeholder="Search...">
                            <span class="input-group-btn">
                              <button class="btn btn-primary" type="button">Search</button>
