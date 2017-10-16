@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-	<script src="{{ url('/') }}/highcharts/highcharts.js"></script>
-    <script src="{{ url('/') }}/highcharts/modules/exporting.js"></script>
+	<script src="{{ url('/') }}/public/highcharts/highcharts.js"></script>
+    <script src="{{ url('/') }}/public/highcharts/modules/exporting.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="content-box-header">
@@ -43,15 +44,21 @@
 			    <div role="tabpanel" class="tab-pane" id="chart">
 			    	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 					<script type="text/javascript">
-			            Highcharts.chart('container', {
+						var date = new Date();
+						var XCat = new Array();
+						for(var i = 30; i > 0; i--){
+							XCat.push(moment().subtract(i, 'days').format("DD/MM"));
+						}
+
+						Highcharts.chart('container', {
 			                chart: {
 			                    type: 'column'
 			                },
 			                title: {
-			                    text: 'Thu nhập tháng 9'
+			                    text: 'Thu nhập tháng ' + (date.getMonth() + 1)
 			                },
 			                xAxis: {
-			                    categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+			                    categories: XCat
 			                },
 			                yAxis: {
 			                    min: 0,
@@ -81,16 +88,13 @@
 			                },
 			                series: [{
 			                    name: 'Pessi',
-			                    data: [5, 3, 4, 35, 2]
-			                }, {
-			                    name: 'Coca',
-			                    data: [2, 2, 3, 2, 1]
-			                }, {
-			                    name: 'Lavie',
-			                    data: [3, 4, 4, 2, 5]
-			                }, {
-			                    name: 'Sting',
-			                    data: [3, 4, 4, 2, 5]
+			                    data: [
+			                    		0, 0, 0, 0, 0, 
+			                    		0, 0, 0, 0, 0, 
+			                    		0, 0, 0, 0, 0,
+			                    		0, 0, 0, 0, 0,
+			                    		0, 0, 0, 0, 0,
+			                    		0, 0, 0, 0, 0]
 			                }]
 			            });
 					</script>
