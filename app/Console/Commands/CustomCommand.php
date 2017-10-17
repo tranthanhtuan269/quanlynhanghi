@@ -70,20 +70,32 @@ class CustomCommand extends Command
             }
 
             // step 2 Save history total order of motel in a day
-            // step 2.1
-            $sql2 = "SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price', created_by";
-                $sql2 .= " FROM orders ";
-                $sql2 .= " WHERE room_id IN (18, 19, 20) ";
-                $sql2 .= " AND DATE(updated_at) = DATE(NOW() - INTERVAL 1 DAY)";
-            $sql2Run = \DB::select($sql2);
 
-            // step 2.3: save to database
-            if(count($sql2Run) > 0){
-                $orderHistory = new \App\Order_History;
-                $orderHistory->order_total = $sql2Run[0]->order_price;
-                $orderHistory->created_by = $sql2Run[0]->created_by;
-                $orderHistory->created_at = $sql2Run[0]->order_date;
-                $orderHistory->save();
+            $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $user->id)->get();
+            $room_list = "";
+            $order_list = array();
+            if(count($rooms) > 0){
+
+                foreach ($rooms as $room) {
+                    $room_list .= $room->id . ',';
+                }
+
+                $room_list = rtrim($room_list,",");
+                // step 2.1
+                $sql2 = "SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price', created_by";
+                    $sql2 .= " FROM orders ";
+                    $sql2 .= " WHERE room_id IN (" . $room_list . ") ";
+                    $sql2 .= " AND DATE(updated_at) = DATE(NOW() - INTERVAL 1 DAY)";
+                $sql2Run = \DB::select($sql2);
+
+                // step 2.3: save to database
+                if(count($sql2Run) > 0){
+                    $orderHistory = new \App\Order_History;
+                    $orderHistory->order_total = $sql2Run[0]->order_price;
+                    $orderHistory->created_by = $sql2Run[0]->created_by;
+                    $orderHistory->created_at = $sql2Run[0]->order_date;
+                    $orderHistory->save();
+                }
             }
         }
 
