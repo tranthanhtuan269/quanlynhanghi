@@ -82,10 +82,10 @@ class CustomCommand extends Command
 
                 $room_list = rtrim($room_list,",");
                 // step 2.1
-                $sql2 = "SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price', created_by";
+                $sql2 = "SELECT SUM(price_order) AS 'order_price', CAST(updated_at AS DATE) as order_date, created_by";
                     $sql2 .= " FROM orders ";
                     $sql2 .= " WHERE room_id IN (" . $room_list . ") ";
-                    $sql2 .= " AND DATE(updated_at) = DATE(NOW() - INTERVAL 1 DAY)";
+                    $sql2 .= " AND DATE(updated_at) = DATE(NOW() - INTERVAL 1 DAY) GROUP BY CAST(updated_at AS DATE), created_by";
                 $sql2Run = \DB::select($sql2);
 
                 // step 2.3: save to database
