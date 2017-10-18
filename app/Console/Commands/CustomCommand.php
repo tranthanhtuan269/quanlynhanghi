@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use DB;
+use App\Order_History;
 
 class CustomCommand extends Command
 {
