@@ -32,7 +32,6 @@ class HomeController extends Controller
         $room_list = '';
         // get all user
         $users = DB::table('users')->select('id')->get();
-        // dd($users);
         foreach ($users as $user) {
             // get all room of user 
             $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $user->id)->get();
