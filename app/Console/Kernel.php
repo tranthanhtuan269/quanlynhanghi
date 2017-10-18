@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('custom:command')->hourlyAt(30);
+        $schedule->command('custom:command')->hourlyAt(5);
     }
 
     /**
