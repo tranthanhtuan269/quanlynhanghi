@@ -29,10 +29,6 @@ class OrderController extends Controller
         // $dataid = [];
         $room_list = "";
         $order_list = array();
-
-        // get before of date
-        $order_history = DB::table('order_history')->select('order_total as order_price', 'created_at as order_date', 'created_by')->where('created_by', '=', $current_id)->orderBy('created_at','desc')->take(29)->get();
-        // dd($order_history);
         if(count($rooms) > 0){
             foreach ($rooms as $room) {
                 $room_list .= $room->id . ',';
@@ -40,15 +36,12 @@ class OrderController extends Controller
 
             $room_list = rtrim($room_list,",");
 
-            $sql = "SELECT SUM(price_order) AS 'order_price', CAST(updated_at AS DATE) as order_date, created_by";
-            $sql .= " FROM orders";
-            $sql .= " WHERE room_id IN (";
-            $sql .= $room_list;
-            $sql .= ")";
-            $sql .= " AND DATE(updated_at) = DATE(NOW()) GROUP BY CAST(updated_at AS DATE), created_by";
-
-            $order_list = DB::select($sql);
-            // dd($order_list);
+            $order_list = DB::select("
+                                    SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price' 
+                                    FROM orders 
+                                    WHERE room_id IN (" . $room_list . ") 
+                                    GROUP BY CAST(updated_at AS DATE)
+                                ");
         }
         
         return view('order.index2', [ 'order_list' => $order_list ]);
