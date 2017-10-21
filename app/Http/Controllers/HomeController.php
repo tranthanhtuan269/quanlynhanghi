@@ -49,9 +49,10 @@ class HomeController extends Controller
             $sql .= " WHERE room_id IN (";
             $sql .= $room_list;
             $sql .= ")";
-            $sql .= " AND DATE(updated_at) = DATE(NOW()) AND created_by = ";
+            $sql .= " AND created_by = ";
             $sql .= $user->id;
             $sql .= " AND DATE(updated_at) = DATE(NOW() - INTERVAL 1 DAY) GROUP BY CAST(updated_at AS DATE)";
+            dd($sql);
 
             $total_order_yesterday = DB::select($sql);
 
