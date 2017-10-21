@@ -43,5 +43,6 @@ class CustomCommand extends Command
         $order->order_total = 1;
         $order->created_by = 1;
         $order->created_at = date("Y-m-d H:i:s");
+        $order->save();
     }
 }
