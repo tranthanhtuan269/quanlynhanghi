@@ -26,9 +26,9 @@ class OrderController extends Controller
     {
         $current_id = Auth::user()->id;
         $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $current_id)->get();
-        // $dataid = [];
         $room_list = "";
         $order_list = array();
+        $number_day = 30;
         if(count($rooms) > 0){
             foreach ($rooms as $room) {
                 $room_list .= $room->id . ',';
@@ -42,9 +42,29 @@ class OrderController extends Controller
                                     WHERE room_id IN (" . $room_list . ") 
                                     GROUP BY CAST(updated_at AS DATE)
                                 ");
+
+            $XList = array();
+            $YList = array();
+            for($i = 0; $i < $number_day; $i++){
+                $XList[] = date("d/m", time() - 60 * 60 * 24 * $i);
+                $YList[] = 0;
+            }
+
+            // dd($list);
+
+            foreach($order_list as $order){
+                $time=date("Y-m-d", time());
+                $date1=date_create($time);
+                $date2=date_create($order->order_date);
+                $diff=date_diff($date1,$date2);
+                $YList[$diff->format("%a")] = $order->order_price;
+            }
+
+            $XList = array_reverse($XList);
+            $YList = array_reverse($YList);
         }
         
-        return view('order.index2', [ 'order_list' => $order_list ]);
+        return view('order.index2', ['XList' => $XList, 'YList' => $YList]);
     }
 
     /**

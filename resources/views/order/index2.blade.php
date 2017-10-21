@@ -17,28 +17,22 @@
 			<div class="tab-content">
 			    <div role="tabpanel" class="tab-pane active" id="list">
 			    	<div class="content-box-large box-with-header">
-		  				@if(count($order_list) <= 0)
-		  					Chưa có giao dịch nào được ghi nhận!
-		  				@else
-		  					<div class="row" id="order-list">
-		  						<table class="table table-striped">
-		  							<tr>
-										<td>#</td>
-										<td class="text-center">Ngày</td>
-										<td class="text-right">Tổng thu</td>
-										<td class="text-center"></td>
-									</tr>
-								@foreach ($order_list as $order)
-									<tr>
-										<td>#</td>
-										<td class="text-center">{{date_format(new DateTime($order->order_date), 'd-m-Y')}}</td>
-										<td class="text-right"><span class="coin">{{$order->order_price}}</span></td>
-										<td class="text-center"></td>
-									</tr>
-								@endforeach
-								</table>
-		  					</div>
-		  				@endif
+	  					<div class="row" id="order-list">
+	  						<table class="table table-striped">
+	  							<tr>
+									<td class="text-center" width="10%">Ngày</td>
+									<td class="text-right" width="90%">Tổng thu</td>
+									<td class="text-center"></td>
+								</tr>
+							@for($y = 0; $y < count($XList); $y++ )
+								<tr>
+									<td class="text-center">{{ $XList[$y] }}</td>
+									<td class="text-right"><span class="coin" style="color:blue; font-size: 18px;">{{ $YList[$y] }}</span> vnđ</td>
+									<td class="text-center"></td>
+								</tr>
+							@endfor
+							</table>
+	  					</div>
 					</div>
 			    </div>
 			    <div role="tabpanel" class="tab-pane" id="chart">
@@ -46,25 +40,42 @@
 					<script type="text/javascript">
 						var date = new Date();
 						var XCat = new Array();
-						for(var i = 30; i > 0; i--){
-							XCat.push(moment().subtract(i, 'days').format("DD/MM"));
-						}
+						var YCat = new Array();
+						var $tempX = "{{ json_encode($XList) }}"; 
+						var $tempY = "{{ json_encode($YList) }}"; 
+
+						var resX = $tempX.split("[&quot;");
+						var resX1 = resX[1].split("&quot;]");
+						var resX2 = resX1[0].split("&quot;,&quot;");
+						console.log(resX2);
+
+						var resY = $tempY.split("[");
+						var resY1 = resY[1].split("]");
+						var resY2 = resY1[0].split(",").map(function(item) {
+						    return parseInt(item, 10) / 1000;
+						});
+						console.log(resY2);
 
 						Highcharts.chart('container', {
 			                chart: {
 			                    type: 'column'
 			                },
 			                title: {
-			                    text: 'Thu nhập tháng ' + (date.getMonth() + 1)
+			                    text: 'Thu nhập 30 ngày'
 			                },
 			                xAxis: {
-			                    categories: XCat
+			                    categories: resX2
 			                },
 			                yAxis: {
 			                    min: 0,
 			                    title: {
 			                        text: ''
 			                    },
+			                    labels: {
+							        formatter: function() {
+							            return this.value + ' K';
+							        }
+							    },
 			                    stackLabels: {
 			                        enabled: true,
 			                        style: {
@@ -87,14 +98,8 @@
 			                    }
 			                },
 			                series: [{
-			                    name: 'Pessi',
-			                    data: [
-			                    		0, 0, 0, 0, 0, 
-			                    		0, 0, 0, 0, 0, 
-			                    		0, 0, 0, 0, 0,
-			                    		0, 0, 0, 0, 0,
-			                    		0, 0, 0, 0, 0,
-			                    		0, 0, 0, 0, 0]
+			                    name: 'Tổng thu nhập',
+			                    data: resY2
 			                }]
 			            });
 					</script>

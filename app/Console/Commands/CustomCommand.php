@@ -39,6 +39,9 @@ class CustomCommand extends Command
      */
     public function handle()
     {
+
+        $date = date("Y-m-d", time() - 60 * 60 * 24);
+
         $room_list = '';
         // get all user
         $users = DB::table('users')->select('id')->get();
@@ -65,6 +68,12 @@ class CustomCommand extends Command
                 $order_history = new Order_History;
                 $order_history->order_total = $total_order_yesterday[0]->order_price;
                 $order_history->created_at = $total_order_yesterday[0]->order_date;
+                $order_history->created_by = 1;
+                $order_history->save();
+            }else{
+                $order_history = new Order_History;
+                $order_history->order_total = 0;
+                $order_history->created_at = $date;
                 $order_history->created_by = 1;
                 $order_history->save();
             }
