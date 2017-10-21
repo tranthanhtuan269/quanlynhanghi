@@ -51,12 +51,13 @@ class HomeController extends Controller
             $sql .= " AND DATE(updated_at) = DATE(NOW() - INTERVAL 1 DAY) GROUP BY CAST(updated_at AS DATE), created_by";
 
             $total_order_yesterday = DB::select($sql);
-
-            $order_history = new Order_History;
-            $order_history->order_total = $total_order_yesterday[0]->order_price;
-            $order_history->created_at = $total_order_yesterday[0]->order_date;
-            $order_history->created_by = $total_order_yesterday[0]->created_by;
-            $order_history->save();
+            if(count($total_order_yesterday) > 0){
+                $order_history = new Order_History;
+                $order_history->order_total = $total_order_yesterday[0]->order_price;
+                $order_history->created_at = $total_order_yesterday[0]->order_date;
+                $order_history->created_by = $total_order_yesterday[0]->created_by;
+                $order_history->save();
+            }
         }
     }
 
