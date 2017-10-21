@@ -42,13 +42,12 @@ class CustomCommand extends Command
 
         $date = date("Y-m-d", time() - 60 * 60 * 24);
 
-        $room_list = '';
         // get all user
-        $users = DB::table('users')->select('id')->get();
+        $users = DB::table('users')->select('id')->orderBy('id', 'asc')->get();
         foreach ($users as $user) {
             // get all room of user 
             $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $user->id)->get();
-
+            $room_list = '';
             // create string room
             foreach ($rooms as $room) {
                 $room_list .= $room->id . ',';
@@ -61,20 +60,23 @@ class CustomCommand extends Command
             $sql .= " WHERE room_id IN (";
             $sql .= $room_list;
             $sql .= ")";
+            $sql .= " AND DATE(updated_at) = DATE(NOW()) AND created_by = ";
+            $sql .= $user->id;
             $sql .= " AND DATE(updated_at) = DATE(NOW() - INTERVAL 1 DAY) GROUP BY CAST(updated_at AS DATE)";
 
             $total_order_yesterday = DB::select($sql);
+
             if(count($total_order_yesterday) > 0){
                 $order_history = new Order_History;
-                $order_history->order_total = $total_order_yesterday[0]->order_price;
+                $order_history->order_total = (int)$total_order_yesterday[0]->order_price;
                 $order_history->created_at = $total_order_yesterday[0]->order_date;
-                $order_history->created_by = 1;
+                $order_history->created_by = $user->id;
                 $order_history->save();
             }else{
                 $order_history = new Order_History;
                 $order_history->order_total = 0;
                 $order_history->created_at = $date;
-                $order_history->created_by = 1;
+                $order_history->created_by = $user->id;
                 $order_history->save();
             }
         }
