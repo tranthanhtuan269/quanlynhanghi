@@ -53,19 +53,19 @@ class CustomCommand extends Command
             $room_list = rtrim($room_list,",");
 
             // run sql count 
-            $sql = "SELECT SUM(price_order) AS 'order_price', CAST(updated_at AS DATE) as order_date, created_by";
+            $sql = "SELECT SUM(price_order) AS 'order_price', CAST(updated_at AS DATE) as order_date";
             $sql .= " FROM orders";
             $sql .= " WHERE room_id IN (";
             $sql .= $room_list;
             $sql .= ")";
-            $sql .= " AND DATE(updated_at) = DATE(NOW() - INTERVAL 1 DAY) GROUP BY CAST(updated_at AS DATE), created_by";
+            $sql .= " AND DATE(updated_at) = DATE(NOW() - INTERVAL 1 DAY) GROUP BY CAST(updated_at AS DATE)";
 
             $total_order_yesterday = DB::select($sql);
             if(count($total_order_yesterday) > 0){
                 $order_history = new Order_History;
                 $order_history->order_total = $total_order_yesterday[0]->order_price;
                 $order_history->created_at = $total_order_yesterday[0]->order_date;
-                $order_history->created_by = $total_order_yesterday[0]->created_by;
+                $order_history->created_by = 1;
                 $order_history->save();
             }
         }
