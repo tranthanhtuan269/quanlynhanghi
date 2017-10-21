@@ -47,10 +47,8 @@ class OrderController extends Controller
             $YList = array();
             for($i = 0; $i < $number_day; $i++){
                 $XList[] = date("d/m", time() - 60 * 60 * 24 * $i);
-                $YList[] = 0;
+                $YList[] = null;
             }
-
-            // dd($list);
 
             foreach($order_list as $order){
                 $time=date("Y-m-d", time());
