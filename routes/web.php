@@ -29,6 +29,21 @@ Route::get('getroominfo', 'RoomController@getroominfo');
 Route::get('getroomtypeinfo', 'RoomTypeController@getRoomTypeInfo');
 Route::get('getserviceinfo', 'ServiceController@getServiceInfo');
 
+Route::get('/user/{id}/postImages', function () {
+    return view('user.images');
+});
+
+Route::get('/user/{id}', function () {
+    return view('user.edit');
+});
+
+Route::post('/user/{id}', 'HomeController@updateInfo');
+Route::post('/user/postImages/{id}', 'HomeController@postImages');
+
+Route::get('/getDistrict/{id}', 'HomeController@getDistrict');
+Route::get('/getTown/{id}', 'HomeController@getTown');
+Route::post('ajaxpro', 'HomeController@ajaxpro');
+
 Route::resource('room', 'RoomController');
 Route::resource('roomtype', 'RoomTypeController');
 Route::resource('service', 'ServiceController');

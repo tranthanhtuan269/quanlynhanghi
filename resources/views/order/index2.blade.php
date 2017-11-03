@@ -61,7 +61,7 @@
 			                    type: 'column'
 			                },
 			                title: {
-			                    text: 'Thu nhập 30 ngày'
+			                    text: 'Thống kê thu nhập 30 ngày'
 			                },
 			                xAxis: {
 			                    categories: resX2

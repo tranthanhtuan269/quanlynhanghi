@@ -28,6 +28,46 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function getDistrict($id){
+        $districts = \DB::table('districts')
+                    ->where('districts.city', '=', $id)
+                    ->where('districts.active', '=', 1)
+                    ->get();   
+        $html = "";
+        $html .= '<option value="0">Chọn Quận / Huyện</option>';
+        foreach ($districts as $district) {
+            $html .= '<option value="'.$district->id.'">'.$district->name.'</option>';
+        }
+        return $html;
+    }
+
+    public function getTown($id){
+        $towns = \DB::table('towns')
+                    ->where('towns.district', '=', $id)
+                    ->where('towns.active', '=', 1)
+                    ->get();   
+        $html = "";
+        $html .= '<option value="0">Chọn Phường / Xã</option>';
+        foreach ($towns as $town) {
+            $html .= '<option value="'.$town->id.'">'.$town->name.'</option>';
+        }
+        return $html;
+    }
+
+    public function ajaxpro(Request $request){
+        if(isset($_POST["image"])){
+            $data = $_POST["image"];
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
+            $imageName = time().'.png';
+            $destinationPath = base_path('public/images');
+            file_put_contents($destinationPath.'/'.$imageName, $data);
+            return \Response::json(array('code' => '200', 'message' => 'success', 'image_url' => $imageName));
+        }
+        return \Response::json(array('code' => '404', 'message' => 'unsuccess', 'image_url' => ""));
+    }
+
     public function countServiceSellInDay(){
         $date = date("Y-m-d", time() - 60 * 60 * 24);
 
@@ -134,5 +174,25 @@ class HomeController extends Controller
                 }
             }
         }
+    }
+
+    public function updateInfo(Request $request, $id){
+        $requestData = $request->all();
+        
+        $user = \App\User::findOrFail(\Auth::user()->id);
+        $user->update($requestData);
+
+        return redirect('/');
+    }
+
+    public function postImages(Request $request, $id){
+        $requestData = $request->all();
+        // dd($requestData);
+        
+        $user = \App\User::findOrFail(\Auth::user()->id);
+        $user->images = $requestData['images'];
+        $user->save();
+
+        return redirect('/');
     }
 }
