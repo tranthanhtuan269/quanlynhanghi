@@ -24,45 +24,48 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $current_id = Auth::user()->id;
-        $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $current_id)->get();
-        $room_list = "";
-        $order_list = array();
-        $number_day = 30;
-        if(count($rooms) > 0){
-            foreach ($rooms as $room) {
-                $room_list .= $room->id . ',';
+        if (\Auth::check()) {
+            $current_id = Auth::user()->id;
+            $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $current_id)->get();
+            $room_list = "";
+            $order_list = array();
+            $number_day = 30;
+            if(count($rooms) > 0){
+                foreach ($rooms as $room) {
+                    $room_list .= $room->id . ',';
+                }
+
+                $room_list = rtrim($room_list,",");
+
+                $order_list = DB::select("
+                                        SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price' 
+                                        FROM orders 
+                                        WHERE room_id IN (" . $room_list . ") 
+                                        GROUP BY CAST(updated_at AS DATE)
+                                    ");
+
+                $XList = array();
+                $YList = array();
+                for($i = 0; $i < $number_day; $i++){
+                    $XList[] = date("d/m", time() - 60 * 60 * 24 * $i);
+                    $YList[] = null;
+                }
+
+                foreach($order_list as $order){
+                    $time=date("Y-m-d", time());
+                    $date1=date_create($time);
+                    $date2=date_create($order->order_date);
+                    $diff=date_diff($date1,$date2);
+                    $YList[$diff->format("%a")] = $order->order_price;
+                }
+
+                $XList = array_reverse($XList);
+                $YList = array_reverse($YList);
             }
-
-            $room_list = rtrim($room_list,",");
-
-            $order_list = DB::select("
-                                    SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price' 
-                                    FROM orders 
-                                    WHERE room_id IN (" . $room_list . ") 
-                                    GROUP BY CAST(updated_at AS DATE)
-                                ");
-
-            $XList = array();
-            $YList = array();
-            for($i = 0; $i < $number_day; $i++){
-                $XList[] = date("d/m", time() - 60 * 60 * 24 * $i);
-                $YList[] = null;
-            }
-
-            foreach($order_list as $order){
-                $time=date("Y-m-d", time());
-                $date1=date_create($time);
-                $date2=date_create($order->order_date);
-                $diff=date_diff($date1,$date2);
-                $YList[$diff->format("%a")] = $order->order_price;
-            }
-
-            $XList = array_reverse($XList);
-            $YList = array_reverse($YList);
+            
+            return view('order.index2', ['XList' => $XList, 'YList' => $YList]);
         }
-        
-        return view('order.index2', ['XList' => $XList, 'YList' => $YList]);
+        return redirect('/');
     }
 
     /**

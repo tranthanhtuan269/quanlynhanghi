@@ -18,9 +18,12 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $current_id = Auth::user()->id;
-        $services = DB::table('services')->select('*')->where('created_by', '=', $current_id)->get();
-        return view('service.index', ['services' => $services ]);
+        if (\Auth::check()) {
+            $current_id = Auth::user()->id;
+            $services = DB::table('services')->select('*')->where('created_by', '=', $current_id)->get();
+            return view('service.index', ['services' => $services ]);
+        }
+        return redirect('/');
     }
 
     /**

@@ -303,30 +303,30 @@ class RoomController extends Controller
         }else if($order_type == 1){
             // qua dem
             if($diff_time <= 12){
-                return $room_type->priceinroom;
+                return $room_type->priceovernight;
             }else{
-                return $room_type->priceinroom + $room_type->priceahour * ($diff_time - 12);
+                return $room_type->priceovernight + $room_type->priceahour * ($diff_time - 12);
             }
         }else if($order_type == 2){
             // nghi ngay
             if($diff_time <= 24){
-                return $room_type->priceinroom;
+                return $room_type->priceaday;
             }else{
-                return $room_type->priceinroom + $room_type->priceahour * ($diff_time - 24);
+                return $room_type->priceaday + $room_type->priceahour * ($diff_time - 24);
             }
         }else if($order_type == 3){
             // nghi tuan
             if($diff_time <= 168){
-                return $room_type->priceinroom;
+                return $room_type->priceaweek;
             }else{
-                return $room_type->priceinroom + $room_type->priceahour * ($diff_time - 168);
+                return $room_type->priceaweek + $room_type->priceahour * ($diff_time - 168);
             }
         }else if($order_type == 4){
             // nghi thang
             if($diff_time <= 720){
-                return $room_type->priceinroom;
+                return $room_type->priceamonth;
             }else{
-                return $room_type->priceinroom + $room_type->priceahour * ($diff_time - 720);
+                return $room_type->priceamonth + $room_type->priceahour * ($diff_time - 720);
             }
         }
     }

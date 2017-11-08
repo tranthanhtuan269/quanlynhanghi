@@ -155,6 +155,7 @@
 					var $invoker = $(e.relatedTarget);
 					var id = $invoker.attr('data-id');
 					$('input[name="id-room-type"]').val(id);
+					$('#loading').show();
 
 					var request_get_info_type = $.ajax({
 				  		headers: {
@@ -167,6 +168,7 @@
 					});
 					 
 					request_get_info_type.done(function( msg ) {
+						$('#loading').hide();
 					  	if(msg.code == 200){
 						  	var roomtype = msg.room_type;
 						  	$('#room-' + id).html(roomtype.name);
@@ -181,6 +183,7 @@
 					});
 					 
 					request_get_info_type.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  	alert( "Request failed: " + textStatus );
 					});
 				});
@@ -195,6 +198,7 @@
 					var edit_priceaday 		= $('#edit_priceaday').val();
 					var edit_priceaweek 	= $('#edit_priceaweek').val();
 					var edit_priceamonth 	= $('#edit_priceamonth').val();
+					$('#loading').show();
 
 					var request_edit_room_type = $.ajax({
 				  		headers: {
@@ -217,6 +221,7 @@
 					});
 					 
 					request_edit_room_type.done(function( msg ) {
+						$('#loading').hide();
 					  	if(msg.code == 200){
 						  	swal({	
 						  		title: 	"Thông báo", 
@@ -233,6 +238,7 @@
 					});
 					 
 					request_edit_room_type.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  	alert( "Request failed: " + textStatus );
 					});
 				});
@@ -246,7 +252,8 @@
 					var priceaday = $('#priceaday').val();
 					var priceaweek = $('#priceaweek').val();
 					var priceamonth = $('#priceamonth').val();
-
+					$('#loading').show();
+					
 					var request_add_room_type = $.ajax({
 				  		headers: {
 					        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -267,6 +274,7 @@
 					});
 					 
 					request_add_room_type.done(function( msg ) {
+						$('#loading').hide();
 					  	if(msg.code == 200){
 							swal({	
 						  		title: 	"Thông báo", 
@@ -283,6 +291,7 @@
 					});
 					 
 					request_add_room_type.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  	alert( "Request failed: " + textStatus );
 					});
 				});

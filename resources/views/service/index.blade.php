@@ -112,6 +112,7 @@
 					var $invoker = $(e.relatedTarget);
 					var id = $invoker.attr('data-id');
 					$('input[name="id-service"]').val(id);
+					$('#loading').show();
 
 					var request_get_info_type = $.ajax({
 				  		headers: {
@@ -124,6 +125,7 @@
 					});
 					 
 					request_get_info_type.done(function( msg ) {
+						$('#loading').hide();
 					  	if(msg.code == 200){
 						  	var service = msg.service;
 						  	$('#edit_name_txt').val(service.name);
@@ -133,6 +135,7 @@
 					});
 					 
 					request_get_info_type.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  	alert( "Request failed: " + textStatus );
 					});
 				});
@@ -143,6 +146,8 @@
 					var edit_service_name 		= $('#edit_name_txt').val();
 					var edit_service_price	 	= $('#edit_price_txt').val();
 					var edit_service_number 	= $('#edit_number_txt').val();
+
+					$('#loading').show();
 
 					var request_edit_service_type = $.ajax({
 				  		headers: {
@@ -161,6 +166,7 @@
 					});
 					 
 					request_edit_service_type.done(function( msg ) {
+						$('#loading').hide();
 					  	if(msg.code == 200){
 						  	swal({	
 						  		title: 	"Thông báo", 
@@ -177,6 +183,7 @@
 					});
 					 
 					request_edit_service_type.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  	alert( "Request failed: " + textStatus );
 					});
 				});
@@ -186,6 +193,8 @@
 					var service_name 		= $('#name_txt').val();
 					var service_price	 	= $('#price_txt').val();
 					var service_number 		= $('#number_txt').val();
+
+					$('#loading').show();
 
 					var request_add_service_type = $.ajax({
 				  		headers: {
@@ -203,6 +212,7 @@
 					});
 					 
 					request_add_service_type.done(function( msg ) {
+						$('#loading').hide();
 					  	if(msg.code == 200){
 						  	swal({	
 						  		title: 	"Thông báo", 
@@ -219,6 +229,7 @@
 					});
 					 
 					request_add_service_type.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  	alert( "Request failed: " + textStatus );
 					});
 				});

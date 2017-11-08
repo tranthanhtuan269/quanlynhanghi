@@ -24,7 +24,7 @@
 									<td class="text-right" width="90%">Tổng thu</td>
 									<td class="text-center"></td>
 								</tr>
-							@for($y = 0; $y < count($XList); $y++ )
+							@for($y = count($XList) - 1; $y > 0 ; $y-- )
 								<tr>
 									<td class="text-center">{{ $XList[$y] }}</td>
 									<td class="text-right"><span class="coin" style="color:blue; font-size: 18px;">{{ $YList[$y] }}</span> vnđ</td>
@@ -54,7 +54,6 @@
 						var resY2 = resY1[0].split(",").map(function(item) {
 						    return parseInt(item, 10) / 1000;
 						});
-						console.log(resY2);
 
 						Highcharts.chart('container', {
 			                chart: {

@@ -246,6 +246,7 @@
 				}
 
 				$('#order').on('show.bs.modal', function (e) {
+					$('#loading').show();
 					var $invoker = $(e.relatedTarget);
 					var id = $invoker.attr('data-id');
 					$('input[name="id-room-type"]').val(id);
@@ -264,6 +265,7 @@
 					});
 					 
 					request_get_info_room.done(function( msg ) {
+						$('#loading').hide();
 					  	if(msg.code == 200){
 
 					  		var room 				= msg.room;
@@ -355,6 +357,7 @@
 					});
 					 
 					request_get_info_room.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  	alert( "Request failed: " + textStatus );
 					});
 				});
@@ -362,6 +365,7 @@
 				// save room status
 				$("#accept-btn").click(function(){
 					// change status room
+					$('#loading').show();
 					var room_id = $('#order-room-id').val();
 					var services_list = $('#services-list').val();
 					var type_order = $( 'input[name=typeOrder]:checked' ).val();
@@ -384,6 +388,7 @@
 					});
 					 
 					request_add_order.done(function( msg ) {
+						$('#loading').hide();
 					  if(msg.code == 200){
 					  	swal("Thông báo", "Phiếu đặt phòng đã được tạo thành công!", "success");
 					  	$('#order').modal('toggle');
@@ -397,11 +402,13 @@
 					});
 					 
 					request_add_order.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  alert( "Request failed: " + textStatus );
 					});
 				});
 
 				$("#update-btn").click(function(){
+					$('#loading').show();
 					// change status room
 					var room_id = $('#order-room-id').val();
 					var order_id = $('#order-id').val();
@@ -424,6 +431,7 @@
 					});
 					 
 					request_edit_order.done(function( msg ) {
+						$('#loading').hide();
 					  if(msg.code == 200){
 					  	swal("Thông báo", "Phiếu đặt phòng đã được sửa thành công!", "success");
 					  	$('#order').modal('toggle');
@@ -437,11 +445,13 @@
 					});
 					 
 					request_edit_order.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  alert( "Request failed: " + textStatus );
 					});
 				});
 
 				$("#pay-btn").click(function(){
+					$('#loading').show();
 					// change status room
 					var room_id = $('#order-room-id').val();
 					var order_id = $('#order-id').val();
@@ -462,6 +472,7 @@
 					});
 					 
 					request_edit_order.done(function( msg ) {
+						$('#loading').hide();
 					  if(msg.code == 200){
 					  	swal("Thông báo", "Phiếu đặt phòng đã được sửa thành công!", "success");
 					  	$('#order').modal('toggle');
@@ -475,12 +486,14 @@
 					});
 					 
 					request_edit_order.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  alert( "Request failed: " + textStatus );
 					});
 				});
 
 				// get info room type
 				$('#select-room-type').change(function() {
+					$('#loading').show();
 				  	var id = $(this).val();
 				  	var request = $.ajax({
 				  		headers: {
@@ -493,6 +506,7 @@
 					});
 					 
 					request.done(function( msg ) {
+						$('#loading').hide();
 					  if(msg.code == 200){
 					  	var roomtype = msg.room_type;
 					  	$('#priceinroom').val(roomtype.priceinroom);
@@ -505,6 +519,7 @@
 					});
 					 
 					request.fail(function( jqXHR, textStatus ) {
+						$('#loading').hide();
 					  alert( "Request failed: " + textStatus );
 					});
 				});
@@ -525,6 +540,7 @@
 					}else{
 						var room_name = $.trim($('#roomname_txt').val());
 						var room_type = $('#select-room-type').val();
+						$('#loading').show();
 						var request_add_room = $.ajax({
 					  		headers: {
 						        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -540,6 +556,7 @@
 						});
 						 
 						request_add_room.done(function( msg ) {
+							$('#loading').hide();
 						  if(msg.code == 200){
 							swal({	
 						  		title: 	"Thông báo", 
@@ -556,6 +573,7 @@
 						});
 						 
 						request_add_room.fail(function( jqXHR, textStatus ) {
+							$('#loading').hide();
 						  alert( "Request failed: " + textStatus );
 						});
 
