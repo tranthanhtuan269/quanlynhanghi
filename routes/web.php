@@ -28,6 +28,7 @@ Route::post('payorder', 'RoomController@payOrder');
 Route::get('getroominfo', 'RoomController@getroominfo');
 Route::get('getroomtypeinfo', 'RoomTypeController@getRoomTypeInfo');
 Route::get('getserviceinfo', 'ServiceController@getServiceInfo');
+Route::get('getdetailbydate', 'OrderController@getDetailByDate');
 
 Route::get('/user/{id}/postImages', function () {
     return view('user.images');

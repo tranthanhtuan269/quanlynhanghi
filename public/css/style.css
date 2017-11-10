@@ -65,3 +65,23 @@
     line-height: 38px;
     padding: 10px 0px 10px 0px;
 }
+
+#order-list tr:hover{
+    background-color: #29ad05;
+}
+
+#order-list tr{
+    cursor: pointer;
+}
+
+#order-detail{
+    font-size: 16px;
+}
+
+#order-detail .row{
+    line-height: 26px;
+}
+
+#order-detail .price_order{
+    font-weight: bold;
+}

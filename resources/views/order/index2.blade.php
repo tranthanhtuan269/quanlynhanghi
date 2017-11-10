@@ -25,7 +25,7 @@
 									<td class="text-center"></td>
 								</tr>
 							@for($y = count($XList) - 1; $y > 0 ; $y-- )
-								<tr>
+								<tr data-date="{{ $XList[$y] }}">
 									<td class="text-center">{{ $XList[$y] }}</td>
 									<td class="text-right"><span class="coin" style="color:blue; font-size: 18px;">{{ $YList[$y] }}</span> vnđ</td>
 									<td class="text-center"></td>
@@ -47,7 +47,6 @@
 						var resX = $tempX.split("[&quot;");
 						var resX1 = resX[1].split("&quot;]");
 						var resX2 = resX1[0].split("&quot;,&quot;");
-						console.log(resX2);
 
 						var resY = $tempY.split("[");
 						var resY1 = resY[1].split("]");
@@ -104,8 +103,48 @@
 					</script>
 			    </div>
 			</div>
-  			
 		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Chi tiết giao dịch ngày <span class="date-detail">01/01/2018</span></h4>
+	      </div>
+	      <div class="modal-body" id="order-detail">
+	        <div class="row">
+	        	<div class="col-md-1">1</div>
+	        	<div class="col-md-5">2017-10-16 00:27:43</div>
+	        	<div class="col-md-3">Phòng 101</div>
+	        	<div class="col-md-3">80000</div>
+	        </div>
+	        <div class="row">
+	        	<div class="col-md-1">1</div>
+	        	<div class="col-md-5">2017-10-16 00:27:43</div>
+	        	<div class="col-md-3">Phòng 101</div>
+	        	<div class="col-md-3">80000</div>
+	        </div>
+	        <div class="row">
+	        	<div class="col-md-1">1</div>
+	        	<div class="col-md-5">2017-10-16 00:27:43</div>
+	        	<div class="col-md-3">Phòng 101</div>
+	        	<div class="col-md-3">80000</div>
+	        </div>
+	        <div class="row">
+	        	<div class="col-md-1">1</div>
+	        	<div class="col-md-5">2017-10-16 00:27:43</div>
+	        	<div class="col-md-3">Phòng 101</div>
+	        	<div class="col-md-3">80000</div>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng lại</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 
 	<script type="text/javascript">
@@ -113,6 +152,57 @@
 			$('.coin').each(function( index ) {
 			  	$( this ).text(Number($( this ).text()).toLocaleString('en'));
 			});
+
+			$('tr').click(function(){
+				var date_selected = $(this).attr('data-date');
+				$('.date-detail').html(date_selected);
+
+				$('#loading').show();
+
+				var get_detail_order_by_date = $.ajax({
+			  		headers: {
+				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				    },
+					url: "{{ url('/') }}/getdetailbydate",
+					method: "GET",
+					data: 
+					{ 
+						'date_selected' : date_selected
+					},
+					dataType: "json"
+				});
+				 
+				get_detail_order_by_date.done(function( msg ) {
+					$('#loading').hide();
+				  	if(msg.code == 200){
+					  	var $html = "";
+					  	var $i = 0;
+				  		$(msg.order_list).each(function( index ) {
+				  			$i++;
+							$html += '<div class="row">';
+					        	$html += '<div class="col-md-1">'+$i+'</div>';
+					        	$html += '<div class="col-md-5"><span class="order-time">'+changeStyleTimer($(this)[0].created_at)+'</div>';
+					        	$html += '<div class="col-md-3"><span class="room-name">'+$(this)[0].room_name+'</span></div>';
+					        	$html += '<div class="col-md-3"><span class="price_order">'+Number($(this)[0].price_order).toLocaleString('en')+' VNĐ</span></div>';
+					        $html += '</div>';
+						});
+						$('#order-detail').html($html);
+				  	}else{
+				  		swal("Cảnh báo", "Đã có lỗi khi lấy dữ liệu cũ!", "error");
+				  	}
+				});
+				 
+				get_detail_order_by_date.fail(function( jqXHR, textStatus ) {
+					$('#loading').hide();
+				  	swal("Cảnh báo", "Request failed: " + textStatus, "error");
+				});
+
+				$('#myModal').modal('show');
+			});
 		});
+
+		function changeStyleTimer($string){			
+			return $string.replace( /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/, "$4 giờ  $5 phút");
+		}
 	</script>
 @endsection
