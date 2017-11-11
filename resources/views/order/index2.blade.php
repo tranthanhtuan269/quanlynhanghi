@@ -19,18 +19,22 @@
 			    	<div class="content-box-large box-with-header">
 	  					<div class="row" id="order-list">
 	  						<table class="table table-striped">
-	  							<tr>
-									<td class="text-center" width="10%">Ngày</td>
-									<td class="text-right" width="90%">Tổng thu</td>
-									<td class="text-center"></td>
-								</tr>
-							@for($y = count($XList) - 1; $y > 0 ; $y-- )
-								<tr data-date="{{ $XList[$y] }}">
-									<td class="text-center">{{ $XList[$y] }}</td>
-									<td class="text-right"><span class="coin" style="color:blue; font-size: 18px;">{{ $YList[$y] }}</span> vnđ</td>
-									<td class="text-center"></td>
-								</tr>
-							@endfor
+	  							<thead>
+		  							<tr>
+										<td class="text-center" width="10%">Ngày</td>
+										<td class="text-right" width="90%">Tổng thu: <span class="coin" style="color:blue; font-size: 18px;">{{ $total }}</span> vnđ</td>
+										<td class="text-center"></td>
+									</tr>
+								</thead>
+								<tbody>
+								@for($y = count($XList) - 1; $y > 0 ; $y-- )
+									<tr data-date="{{ $XList[$y] }}">
+										<td class="text-center">{{ $XList[$y] }}</td>
+										<td class="text-right"><span class="coin" style="color:blue; font-size: 18px;">{{ $YList[$y] }}</span> vnđ</td>
+										<td class="text-center"></td>
+									</tr>
+								@endfor
+								</tbody>
 							</table>
 	  					</div>
 					</div>
@@ -153,7 +157,7 @@
 			  	$( this ).text(Number($( this ).text()).toLocaleString('en'));
 			});
 
-			$('tr').click(function(){
+			$('tbody>tr').click(function(){
 				var date_selected = $(this).attr('data-date');
 				$('.date-detail').html(date_selected);
 

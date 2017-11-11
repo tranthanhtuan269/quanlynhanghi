@@ -51,19 +51,21 @@ class OrderController extends Controller
                     $YList[] = null;
                 }
 
+                $total = 0;
                 foreach($order_list as $order){
                     $time=date("Y-m-d", time());
                     $date1=date_create($time);
                     $date2=date_create($order->order_date);
                     $diff=date_diff($date1,$date2);
                     $YList[$diff->format("%a")] = $order->order_price;
+                    $total += $order->order_price;
                 }
 
                 $XList = array_reverse($XList);
                 $YList = array_reverse($YList);
             }
             
-            return view('order.index2', ['XList' => $XList, 'YList' => $YList]);
+            return view('order.index2', ['XList' => $XList, 'YList' => $YList, 'total' => $total]);
         }
         return redirect('/');
     }

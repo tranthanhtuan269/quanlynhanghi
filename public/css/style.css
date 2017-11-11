@@ -66,11 +66,11 @@
     padding: 10px 0px 10px 0px;
 }
 
-#order-list tr:hover{
+#order-list tbody tr:hover{
     background-color: #29ad05;
 }
 
-#order-list tr{
+#order-list tbody tr{
     cursor: pointer;
 }
 
