@@ -35,6 +35,13 @@
 									</tr>
 								@endfor
 								</tbody>
+								<tfoot>
+								  	<tr>
+								     	<td class="text-center" width="10%">Tổng thu: </td>
+								     	<td class="text-right" width="90%"><span class="coin" style="color:blue; font-size: 18px;">{{ $total }}</span> vnđ</td>
+								     	<td class="text-center"></td>
+								  	</tr>
+								</tfoot>
 							</table>
 	  					</div>
 					</div>
