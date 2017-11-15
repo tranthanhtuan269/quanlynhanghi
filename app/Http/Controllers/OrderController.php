@@ -25,6 +25,8 @@ class OrderController extends Controller
     public function index()
     {
         if (\Auth::check()) {
+            $XList = array();
+            $YList = array();
             $current_id = Auth::user()->id;
             $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $current_id)->get();
             $room_list = "";
@@ -44,8 +46,6 @@ class OrderController extends Controller
                                         GROUP BY CAST(updated_at AS DATE)
                                     ");
 
-                $XList = array();
-                $YList = array();
                 for($i = 0; $i < $number_day; $i++){
                     $XList[] = date("d/m/Y", time() - 60 * 60 * 24 * $i);
                     $YList[] = null;

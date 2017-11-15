@@ -97,7 +97,6 @@
         height: 400px;
         width: 100%;
       }
-
     </style>
   </head>
   <body>
@@ -112,7 +111,7 @@
                <div class="col-md-5 col-lg-6">
                   <!-- Logo -->
                   <div class="logo">
-                     <h1><a href="{{ url('/') }}">{{ config('app.name', 'Laravel') }}</a></h1>
+                     <h1><a href="{{ url('/') }}">{{ config('app.name', 'Quanlynhanghi.net') }}</a></h1>
                   </div>
                </div>
                <div class="col-md-4 col-lg-4">
@@ -132,8 +131,8 @@
                       <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                         <ul class="nav navbar-nav">
                           @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <li><a href="{{ route('login') }}">Đăng nhập</a></li>
+                            <li><a href="{{ route('register') }}">Đăng ký</a></li>
                           @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -192,7 +191,7 @@
          <div class="container">
          
             <div class="copy text-center">
-               Copyright 2017 <a href='#'>{{ config('app.name', 'Laravel') }}</a>
+               Copyright 2017 <a href='#'>{{ config('app.name', 'quanlynhanghi.net') }}</a>
             </div>
             
          </div>
