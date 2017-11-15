@@ -27,6 +27,7 @@ class OrderController extends Controller
         if (\Auth::check()) {
             $XList = array();
             $YList = array();
+            $total = 0;
             $current_id = Auth::user()->id;
             $rooms = DB::table('rooms')->select('id')->where('created_by', '=', $current_id)->get();
             $room_list = "";
