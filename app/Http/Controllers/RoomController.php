@@ -35,7 +35,7 @@ class RoomController extends Controller
     public function index()
     {
         if (\Auth::check()) {
-            dd(\Auth::user()->expiration_date);
+            dd(\Auth::user()->expiration_date == null);
         }
         $current_id = Auth::user()->id;
         $rooms = DB::table('rooms')->select('*')->where('created_by', '=', $current_id)->get();
