@@ -35,14 +35,17 @@ class RoomController extends Controller
     public function index()
     {
         if (\Auth::check()) {
-            dd(\Auth::user()->expiration_date == null);
+            if(\Auth::user()->expiration_date == null){
+                \Auth::user()->expiration_date = \Auth::user()->created_at;
+                \Auth::user()->save();
+            }
+            $current_id = Auth::user()->id;
+            $rooms = DB::table('rooms')->select('*')->where('created_by', '=', $current_id)->get();
+            $room_types = DB::table('room_type')->where('created_by', $current_id)->pluck('name', 'id');
+            $room_type_first = DB::table('room_type')->where('created_by', $current_id)->first();
+            $services = DB::table('services')->select('*')->where('created_by', '=', $current_id)->get();
+            return view('room.index', [ 'rooms' => $rooms, 'room_types' => $room_types, 'services' => $services, 'room_type_first' => $room_type_first]);
         }
-        $current_id = Auth::user()->id;
-        $rooms = DB::table('rooms')->select('*')->where('created_by', '=', $current_id)->get();
-        $room_types = DB::table('room_type')->where('created_by', $current_id)->pluck('name', 'id');
-        $room_type_first = DB::table('room_type')->where('created_by', $current_id)->first();
-        $services = DB::table('services')->select('*')->where('created_by', '=', $current_id)->get();
-        return view('room.index', [ 'rooms' => $rooms, 'room_types' => $room_types, 'services' => $services, 'room_type_first' => $room_type_first]);
     }
 
     /**
