@@ -39,6 +39,13 @@ class RoomController extends Controller
                 \Auth::user()->expiration_date = \Auth::user()->created_at;
                 \Auth::user()->save();
             }
+            if(\Auth::user()->expiration_date != null){
+                $yesterday = date('d.m.Y',strtotime("-1 days"));
+                $expiration_date = date('d.m.Y',strtotime(\Auth::user()->expiration_date));
+                if($yesterday >= $expiration_date){
+                    return view('home');
+                }
+            }
             $current_id = Auth::user()->id;
             $rooms = DB::table('rooms')->select('*')->where('created_by', '=', $current_id)->get();
             $room_types = DB::table('room_type')->where('created_by', $current_id)->pluck('name', 'id');
