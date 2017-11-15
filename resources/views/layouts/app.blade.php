@@ -114,7 +114,7 @@
                      <h1><a href="{{ url('/') }}">{{ config('app.name', 'Quanlynhanghi.net') }}</a></h1>
                   </div>
                </div>
-               <div class="col-md-4 col-lg-4">
+               <div class="col-md-3 col-lg-3">
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="input-group form" style="display: none;">
@@ -126,7 +126,7 @@
                     </div>
                   </div>
                </div>
-               <div class="col-md-3 col-lg-2">
+               <div class="col-md-4 col-lg-3">
                   <div class="navbar navbar-inverse" role="banner">
                       <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                         <ul class="nav navbar-nav">

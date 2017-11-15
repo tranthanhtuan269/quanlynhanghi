@@ -25,6 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (\Auth::check()) {
+            dd(\Auth::user()->expiration_date);
+        }
         return view('home');
     }
 
