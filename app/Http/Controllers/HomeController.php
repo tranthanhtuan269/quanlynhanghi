@@ -195,4 +195,8 @@ class HomeController extends Controller
 
         return redirect('/');
     }
+
+    public function functions(){
+        return view('site/functions');
+    }
 }

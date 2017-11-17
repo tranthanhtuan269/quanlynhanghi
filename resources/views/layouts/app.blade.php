@@ -173,7 +173,8 @@
                     <li class="current"><a href="{{ url('/') }}"><i class="glyphicon glyphicon-home"></i> QL. nhà nghỉ</a></li>
                     <li><a href="{{ url('/roomtype') }}"><i class="glyphicon glyphicon-calendar"></i> QL. phòng</a></li>
                     <li><a href="{{ url('/service') }}"><i class="glyphicon glyphicon-list-alt"></i> QL. dịch vụ</a></li>
-                    <li><a href="{{ url('/order') }}"><i class="glyphicon glyphicon-calendar"></i> QL. giao dịch</a></li>
+                    <li><a href="{{ url('/order') }}"><i class="glyphicon glyphicon-sort"></i> QL. giao dịch</a></li>
+                    <li><a href="{{ url('/functions') }}"><i class="glyphicon glyphicon-cog"></i> Tính năng mới</a></li>
                     @if(false)
                     <li><a href="{{ url('/ql-khach-hang') }}"><i class="glyphicon glyphicon-book"></i> QL. khách hàng</a></li>
                     <li><a href="{{ url('/ql-nhan-vien') }}"><i class="glyphicon glyphicon-user"></i> QL. nhân viên</a></li>

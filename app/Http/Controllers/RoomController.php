@@ -40,8 +40,9 @@ class RoomController extends Controller
                 \Auth::user()->save();
             }
             if(\Auth::user()->expiration_date != null){
-                $yesterday = date('d.m.Y',strtotime("-1 days"));
-                $expiration_date = date('d.m.Y',strtotime(\Auth::user()->expiration_date));
+                $yesterday = strtotime("-1 days");
+                $expiration_date = strtotime(\Auth::user()->expiration_date);
+                
                 if($yesterday >= $expiration_date){
                     return view('home');
                 }

@@ -9,8 +9,8 @@
 			<div class="content-box-header">
 				<div class="panel-title">Quản lý giao dịch</div>
 				<div class="panel-options">
-					<a href="#list" aria-controls="list" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-signal"></i></a>
-					<a href="#chart" aria-controls="chart" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-list"></i></a>
+					<a href="#list" aria-controls="list" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-list"></i></a>
+					<a href="#chart" aria-controls="chart" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-signal"></i></a>
 				</div>
   			</div>
   			<!-- Tab panes -->

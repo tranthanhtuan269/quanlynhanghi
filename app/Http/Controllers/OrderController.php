@@ -40,17 +40,20 @@ class OrderController extends Controller
 
                 $room_list = rtrim($room_list,",");
 
-                $order_list = DB::select("
-                                        SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price' 
-                                        FROM orders 
-                                        WHERE room_id IN (" . $room_list . ") 
-                                        GROUP BY CAST(updated_at AS DATE)
-                                    ");
-
                 for($i = 0; $i < $number_day; $i++){
                     $XList[] = date("d/m/Y", time() - 60 * 60 * 24 * $i);
                     $YList[] = null;
                 }
+
+                $timeGetFirst = date("Y-m-d", time() - 60 * 60 * 24 * ($number_day - 1));
+
+                $order_list = DB::select("
+                                        SELECT CAST(updated_at AS DATE) AS 'order_date', SUM(price_order) AS 'order_price' 
+                                        FROM orders 
+                                        WHERE room_id IN (" . $room_list . ") 
+                                        AND updated_at > '$timeGetFirst 00:00:00'
+                                        GROUP BY CAST(updated_at AS DATE)
+                                    ");
 
                 $total = 0;
                 foreach($order_list as $order){
