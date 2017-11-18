@@ -20,7 +20,7 @@ Route::get('/', 'RoomController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/test', 'HomeController@countServiceSellInDay')->name('test');
+Route::get('/test', 'HomeController@test')->name('test');
 Route::get('/functions', 'HomeController@functions');
 Route::resource('hotel', 'HotelController');
 Route::post('addorder', 'RoomController@addOrder');

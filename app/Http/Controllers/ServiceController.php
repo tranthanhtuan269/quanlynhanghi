@@ -11,6 +11,17 @@ use Response;
 
 class ServiceController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,12 +29,51 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        if (\Auth::check()) {
-            $current_id = Auth::user()->id;
-            $services = DB::table('services')->select('*')->where('created_by', '=', $current_id)->get();
-            return view('service.index', ['services' => $services ]);
+        $current_id = Auth::user()->id;
+
+        //get all service of id
+        $sql = "SELECT * FROM services where created_by = $current_id";
+        $services = \DB::select($sql);
+        $listService = "";
+        $resource = array();
+        $YList = array();
+        $number_day = 30;
+        
+        if(count($services) > 0){
+            for($i = 0; $i < $number_day; $i++){
+                $XList[] = date("d/m/Y", time() - 60 * 60 * 24 * $i);
+            }
+            foreach ($services as $service) {
+                $data = array();
+                for($i = 0; $i < $number_day; $i++){
+                    $data[] = null;
+                }  
+                $timeGetFirst = date("Y-m-d", time() - 60 * 60 * 24 * ($number_day - 1));
+                $sql2 = "
+                        SELECT 
+                            SUM(number_count) AS 'number_sell', 
+                            CAST(created_at AS DATE) as order_date 
+                        FROM order_detail 
+                        WHERE service_id = $service->id
+                        AND created_by = $current_id
+                        AND created_at > '$timeGetFirst 00:00:00'
+                        GROUP BY CAST(created_at AS DATE)";
+                $resource = \DB::select($sql2);
+
+                foreach($resource as $order){
+                    $time=date("Y-m-d", time());
+                    $date1=date_create($time);
+                    $date2=date_create($order->order_date);
+                    $diff=date_diff($date1,$date2);
+                    $data[$diff->format("%a")] = $order->number_sell;
+                }
+                $obj = new objectNew;
+                $obj->name = $service->name;
+                $obj->data = $data;
+                array_push($YList, $obj);
+            }
         }
-        return redirect('/');
+        return view('service.index', ['services' => $services, 'XList' => $XList, 'YList' => json_encode($YList)]);
     }
 
     /**
@@ -126,4 +176,58 @@ class ServiceController extends Controller
         }
         return Response::json(array('code' => '404', 'message' => 'unsuccess', 'service' => null));
     }
+
+    public function getServiceSale(){
+        $current_id = \Auth::user()->id;
+        //get all service of id
+        $sql = "SELECT id, name FROM services where created_by = $current_id";
+        $listServiceID = \DB::select($sql);
+        $listService = "";
+        $resource = array();
+        $YList = array();
+        $number_day = 30;
+        
+        if(count($listServiceID) > 0){
+            for($i = 0; $i < $number_day; $i++){
+                $XList[] = date("d/m/Y", time() - 60 * 60 * 24 * $i);
+            }
+            foreach ($listServiceID as $service) {
+                $data = array();
+                for($i = 0; $i < $number_day; $i++){
+                    $data[] = null;
+                }  
+                $timeGetFirst = date("Y-m-d", time() - 60 * 60 * 24 * ($number_day - 1));
+                $sql2 = "
+                        SELECT 
+                            SUM(number_count) AS 'number_sell', 
+                            CAST(created_at AS DATE) as order_date 
+                        FROM order_detail 
+                        WHERE service_id = $service->id
+                        AND created_by = $current_id
+                        AND created_at > '$timeGetFirst 00:00:00'
+                        GROUP BY CAST(created_at AS DATE)";
+                $resource = \DB::select($sql2);
+
+                foreach($resource as $order){
+                    $time=date("Y-m-d", time());
+                    $date1=date_create($time);
+                    $date2=date_create($order->order_date);
+                    $diff=date_diff($date1,$date2);
+                    $data[$diff->format("%a")] = $order->number_sell;
+                }
+                $obj = new objectNew;
+                $obj->name = $service->name;
+                $obj->data = $data;
+                array_push($YList, $obj);
+            }
+        }
+
+        // dd($YList);
+        return view('site/test',['XList' => $XList, 'YList' => json_encode($YList)]);
+    }
+}
+
+class objectNew{
+    public $name;
+    public $data;
 }
