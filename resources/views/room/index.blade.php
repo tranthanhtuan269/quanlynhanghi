@@ -190,8 +190,8 @@
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
 	        <button type="button" class="btn btn-primary" id="accept-btn">Đặt phòng</button>
-	        <button type="button" class="btn btn-primary" id="update-btn">Cập nhật</button>
-	        <button type="button" class="btn btn-danger" id="pay-btn">Thanh toán</button>
+	        <button type="button" class="btn btn-primary" id="update-btn" style="display: none;">Cập nhật</button>
+	        <button type="button" class="btn btn-danger" id="pay-btn" style="display: none;">Thanh toán</button>
 	      </div>
 	    </div>
 	  </div>
