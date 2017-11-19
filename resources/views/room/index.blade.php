@@ -297,6 +297,7 @@
 				 
 				request_get_info_room.done(function( msg ) {
 					$('#loading').hide();
+					$('#accept-btn').prop('disabled', false);
 				  	if(msg.code == 200){
 
 				  		var room 				= msg.room;
