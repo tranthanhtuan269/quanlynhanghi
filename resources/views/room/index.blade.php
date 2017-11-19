@@ -395,6 +395,7 @@
 
 			// save room status
 			$("#accept-btn").click(function(){
+				$(this).prop('disabled', true);
 				// change status room
 				$('#loading').show();
 				var room_id = $('#order-room-id').val();
@@ -420,26 +421,29 @@
 				 
 				request_add_order.done(function( msg ) {
 					$('#loading').hide();
-				  if(msg.code == 200){
-				  	swal("Thông báo", "Phiếu đặt phòng đã được tạo thành công!", "success");
-				  	$('#order').modal('toggle');
+					$(this).prop('disabled', false);
+				  	if(msg.code == 200){
+				  		swal("Thông báo", "Phiếu đặt phòng đã được tạo thành công!", "success");
+				  		$('#order').modal('toggle');
 				  	
-				  	if($('#room-' + $('#order-room-id').val()).hasClass( "state-ok" )){
-				  		$('#room-' + $('#order-room-id').val()).removeClass( "state-ok" ).addClass( "state-process" );
+				  		if($('#room-' + $('#order-room-id').val()).hasClass( "state-ok" )){
+				  			$('#room-' + $('#order-room-id').val()).removeClass( "state-ok" ).addClass( "state-process" );
+				  		}
+				  	}else{
+				  		swal("Cảnh báo", "Đã có lỗi khi tạo một phiếu đặt phòng mới!", "error");
 				  	}
-				  }else{
-				  	swal("Cảnh báo", "Đã có lỗi khi tạo một phiếu đặt phòng mới!", "error");
-				  }
 				});
 				 
 				request_add_order.fail(function( jqXHR, textStatus ) {
 					$('#loading').hide();
-				  alert( "Request failed: " + textStatus );
+					$(this).prop('disabled', false);
+				  	alert( "Request failed: " + textStatus );
 				});
 			});
 
 			$("#update-btn").click(function(){
 				$('#loading').show();
+				$(this).prop('disabled', true);
 				// change status room
 				var room_id = $('#order-room-id').val();
 				var order_id = $('#order-id').val();
@@ -463,26 +467,29 @@
 				 
 				request_edit_order.done(function( msg ) {
 					$('#loading').hide();
-				  if(msg.code == 200){
-				  	swal("Thông báo", "Phiếu đặt phòng đã được sửa thành công!", "success");
-				  	$('#order').modal('toggle');
+					$(this).prop('disabled', false);
+				  	if(msg.code == 200){
+				  		swal("Thông báo", "Phiếu đặt phòng đã được sửa thành công!", "success");
+				  		$('#order').modal('toggle');
 
-				  	if($('#room-' + $('#order-room-id').val()).hasClass( "state-process" )){
-				  		$(this).removeClass( "state-process" ).addClass( "state-ok" );
+				  		if($('#room-' + $('#order-room-id').val()).hasClass( "state-process" )){
+				  			$(this).removeClass( "state-process" ).addClass( "state-ok" );
+				  		}
+				  	}else{
+				  		swal("Cảnh báo", "Đã có lỗi khi sửa một phiếu đặt phòng!", "error");
 				  	}
-				  }else{
-				  	swal("Cảnh báo", "Đã có lỗi khi sửa một phiếu đặt phòng!", "error");
-				  }
 				});
 				 
 				request_edit_order.fail(function( jqXHR, textStatus ) {
 					$('#loading').hide();
-				  alert( "Request failed: " + textStatus );
+					$(this).prop('disabled', false);
+				  	alert( "Request failed: " + textStatus );
 				});
 			});
 
 			$("#pay-btn").click(function(){
 				$('#loading').show();
+				$(this).prop('disabled', true);
 				// change status room
 				var room_id = $('#order-room-id').val();
 				var order_id = $('#order-id').val();
@@ -504,21 +511,23 @@
 				 
 				request_edit_order.done(function( msg ) {
 					$('#loading').hide();
-				  if(msg.code == 200){
-				  	swal("Thông báo", "Phiếu đặt phòng đã được sửa thành công!", "success");
-				  	$('#order').modal('toggle');
+					$(this).prop('disabled', false);
+				  	if(msg.code == 200){
+				  		swal("Thông báo", "Phiếu đặt phòng đã được sửa thành công!", "success");
+				  		$('#order').modal('toggle');
 
-				  	if($('#room-' + $('#order-room-id').val()).hasClass( "state-process" )){
-				  		$('#room-' + $('#order-room-id').val()).removeClass( "state-process" ).addClass( "state-ok" );
+				  		if($('#room-' + $('#order-room-id').val()).hasClass( "state-process" )){
+				  			$('#room-' + $('#order-room-id').val()).removeClass( "state-process" ).addClass( "state-ok" );
+				  		}
+				  	}else{
+				  		swal("Cảnh báo", "Đã có lỗi khi sửa một phiếu đặt phòng!", "error");
 				  	}
-				  }else{
-				  	swal("Cảnh báo", "Đã có lỗi khi sửa một phiếu đặt phòng!", "error");
-				  }
 				});
 				 
 				request_edit_order.fail(function( jqXHR, textStatus ) {
 					$('#loading').hide();
-				  alert( "Request failed: " + textStatus );
+					$(this).prop('disabled', false);
+				  	alert( "Request failed: " + textStatus );
 				});
 			});
 
