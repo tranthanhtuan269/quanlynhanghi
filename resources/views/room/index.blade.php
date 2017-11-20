@@ -21,7 +21,7 @@
 							@else
 							<div class="col-md-3">
 							@endif
-								<div id="room-{{$room->id}}" class="thumbnail product-item <?php if($room->state == 0) echo 'state-ok'; else echo 'state-process'; ?>" data-rel="order" data-toggle="modal" data-target="#order" data-id="{{$room->id}}" data-name="{{$room->name}}">
+								<div id="room-{{$room->id}}" class="thumbnail product-item <?php if($room->state == 0) echo 'state-ok'; else echo 'state-process'; ?>" data-rel="order" data-toggle="modal" data-id="{{$room->id}}" data-name="{{$room->name}}">
 									{{$room->name}}
 					    		</div>
 							</div>
@@ -276,11 +276,11 @@
 				$('#pay-btn').prop('disabled', true);
 			}
 
-			$('#order').on('show.bs.modal', function (e) {
+			$('.product-item').click(function(){
 				$('#loading').show();
-				var $invoker = $(e.relatedTarget);
-				var id = $invoker.attr('data-id');
-				$('input[name="id-room-type"]').val(id);
+				$("#order-room-id").val($(this).data('id'));
+				$("#room-name").text($(this).data('name'));
+				var id = $(this).attr('data-id');
 				$('.service-pick').remove();
 				$('.detail-room-price').remove();
 				$('.total-order').remove();
@@ -299,7 +299,7 @@
 					$('#loading').hide();
 					$('#accept-btn').prop('disabled', false);
 				  	if(msg.code == 200){
-
+				  		$('#order').modal('show');
 				  		var room 				= msg.room;
 				  		var room_type			= msg.room_type;
 				  		var order 				= msg.order;
@@ -565,15 +565,6 @@
 				});
 			});
 
-			function addClickForProduct(){
-				$(".product-item").click(function(){
-					$("#order-room-id").val($(this).data('id'));
-					$("#room-name").text($(this).data('name'));
-				});
-			}
-
-			addClickForProduct();
-
 			// add room
 			$('#add-room').click(function(){
 				if($.trim($('#roomname_txt').val()) == ''){
@@ -616,11 +607,6 @@
 					request_add_room.fail(function( jqXHR, textStatus ) {
 						$('#loading').hide();
 					  alert( "Request failed: " + textStatus );
-					});
-
-					$(".product-item").click(function(){
-						$("#room-id").val($(this).data('id'));
-						$("#room-name").text($(this).data('name'));
 					});
 				}
 			});
