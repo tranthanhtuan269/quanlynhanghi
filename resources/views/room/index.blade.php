@@ -629,7 +629,7 @@
 					var service_name = $("#id_service").find('option:selected').text();
        				var service_price = selected.data('price'); 
        				var add_data = "<tr class='service-pick' data-id='" + service_id + "' data-number='" + service_number + "' data-price='" + service_price + "'><td>" + count_service + "</td><td>" + service_name + "</td><td>" + service_number +"</td><td>" + Number((service_price * service_number)).toLocaleString('en') + "</td><td><i id='" + count + "' class='glyphicon glyphicon-remove-circle delete-service'></i></td></tr>";
-   					if($( "#service-table>tbody>tr" ).length <= 1){
+   					if($( "#service-table>tbody>tr" ).length < 1){
    						$("#services-list").val('{"service_id" : ' + service_id + ', "service_number":' + service_number + '}');
    					}else{
    						$("#services-list").val($("#services-list").val() + ',{"service_id" : ' + service_id + ', "service_number":' + service_number + '}');
