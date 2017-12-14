@@ -143,6 +143,7 @@
                                     <li>
                                         <a href="{{ url('/') }}/user/{{ Auth::user()->id }}/postImages">Thêm ảnh</a>
                                         <a href="{{ url('/') }}/user/{{ Auth::user()->id }}">Sửa thông tin</a>
+                                        <a href="{{ url('/') }}/user/{{ Auth::user()->id }}/settings">Sửa cấu hình</a>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

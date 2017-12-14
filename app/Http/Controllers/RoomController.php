@@ -164,7 +164,7 @@ class RoomController extends Controller
             // store order
             $order              = new Order;
             $order->room_id     = $input['room_id'];
-            $order->room_name     = $input['room_name'];
+            $order->room_name   = $input['room_name'];
             $order->customer_id = null;
             $order->created_by  = $current_id;
             $order->created_at  = date("Y-m-d H:i:s");
@@ -273,14 +273,18 @@ class RoomController extends Controller
 
                 $room_type = DB::table('room_type')->select('*')->where('id', '=', $room->room_type)->first();
 
+                $timeout = \Auth::user()->houroutroom;
                 $to_time = strtotime(date("Y-m-d H:i:s"));
                 $from_time = strtotime($room->updated_at);
                 $diff_time = round(abs($to_time - $from_time) / 3600);
 
+                $to_time_2 = strtotime(date("Y-m-d ". $timeout .":i:s"));
+                $diff_time_2 = round(abs($to_time_2 - $from_time) / 3600);
+
                 if($room_type == null){
                     $price_order += 0;
                 }else{
-                    $price_order += $this->getPriceRoom($room->order_type, $diff_time, $room_type);
+                    $price_order += $this->getPriceRoom($room->order_type, $diff_time, $diff_time_2, $room_type);
                 }
 
                 $order->price_order = $price_order;
@@ -306,20 +310,20 @@ class RoomController extends Controller
         return Response::json(array('code' => '404', 'message' => 'unsuccess'));
     }
 
-    function getPriceRoom($order_type, $diff_time, $room_type){
+    function getPriceRoom($order_type, $diff_time, $diff_time_2, $room_type){
         if($order_type == 0){
             // nghi gio
-            if($diff_time <= 1){
+            if($diff_time <= \Auth::user()->timeinroommin){ // có chỗ nghỉ tính 2h
                 return $room_type->priceinroom;
             }else{
-                return $room_type->priceinroom + $room_type->priceahour * ($diff_time - 1);
+                return $room_type->priceinroom + $room_type->priceahour * ($diff_time - \Auth::user()->timeinroommin);
             }
         }else if($order_type == 1){
             // qua dem
-            if($diff_time <= 12){
+            if($diff_time_2 <= 0){
                 return $room_type->priceovernight;
             }else{
-                return $room_type->priceovernight + $room_type->priceahour * ($diff_time - 12);
+                return $room_type->priceovernight + $room_type->priceahour * ($diff_time_2);
             }
         }else if($order_type == 2){
             // nghi ngay

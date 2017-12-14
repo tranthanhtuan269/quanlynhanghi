@@ -30,7 +30,7 @@ class HomeController extends Controller
 
     public function getDistrict($id){
         $districts = \DB::table('districts')
-                    ->where('districts.city', '=', $id)
+                    ->where('districts.city_id', '=', $id)
                     ->where('districts.active', '=', 1)
                     ->get();   
         $html = "";
@@ -43,7 +43,7 @@ class HomeController extends Controller
 
     public function getTown($id){
         $towns = \DB::table('towns')
-                    ->where('towns.district', '=', $id)
+                    ->where('towns.district_id', '=', $id)
                     ->where('towns.active', '=', 1)
                     ->get();   
         $html = "";
@@ -177,6 +177,15 @@ class HomeController extends Controller
     }
 
     public function updateInfo(Request $request, $id){
+        $requestData = $request->all();
+        
+        $user = \App\User::findOrFail(\Auth::user()->id);
+        $user->update($requestData);
+
+        return redirect('/');
+    }
+
+    public function updateSetting(Request $request, $id){
         $requestData = $request->all();
         
         $user = \App\User::findOrFail(\Auth::user()->id);

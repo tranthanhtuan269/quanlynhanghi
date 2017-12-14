@@ -39,7 +39,12 @@ Route::get('/user/{id}', function () {
     return view('user.edit');
 });
 
+Route::get('/user/{id}/settings', function () {
+    return view('user.settings');
+});
+
 Route::post('/user/{id}', 'HomeController@updateInfo');
+Route::post('/user/{id}/settings', 'HomeController@updateSetting');
 Route::post('/user/postImages/{id}', 'HomeController@postImages');
 
 Route::get('/getDistrict/{id}', 'HomeController@getDistrict');
