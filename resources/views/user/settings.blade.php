@@ -32,12 +32,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="clearfix"></div>
+                    <hr>
                     <div class="col-md-6">
-                        <div class="form-group {{ $errors->has('houroutroom') ? 'has-error' : ''}}">
-                            {!! Form::label('houroutroom', 'Giờ trả phòng sáng', ['class' => 'col-md-6 control-label']) !!}
+                        <div class="form-group {{ $errors->has('overnightin') ? 'has-error' : ''}}">
+                            {!! Form::label('overnightin', 'Giờ vào phòng qua đêm', ['class' => 'col-md-6 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::text('houroutroom', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                                {!! $errors->first('houroutroom', '<p class="help-block">:message</p>') !!}
+                                {!! Form::text('overnightin', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                                {!! $errors->first('overnightin', '<p class="help-block">:message</p>') !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group {{ $errors->has('overnightout') ? 'has-error' : ''}}">
+                            {!! Form::label('overnightout', 'Giờ trả phòng qua đêm', ['class' => 'col-md-6 control-label']) !!}
+                            <div class="col-md-6">
+                                {!! Form::text('overnightout', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                                {!! $errors->first('overnightout', '<p class="help-block">:message</p>') !!}
                             </div>
                         </div>
                     </div>

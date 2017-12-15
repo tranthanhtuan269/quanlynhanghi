@@ -143,13 +143,16 @@ class RoomController extends Controller
                 $room_type = DB::table('room_type')->select('*')->where('id', '=', $room->room_type)->first();
                 $order = DB::table('orders')->select('*')->where([['room_id', '=', $id], ['state', '=', '1']])->first();
                 if($order){
+                    $timeinroommin = \Auth::user()->timeinroommin;
+                    $overnightin = \Auth::user()->overnightin;
+                    $overnightout = \Auth::user()->overnightout;
                     $order_details = DB::table('order_detail')
                                     ->join('services', 'services.id', '=', 'order_detail.service_id')
                                     ->where('order_detail.order_id', '=', $order->id)
                                     ->get();
-                    return Response::json(array('code' => '200', 'message' => 'success', 'room' => $room, 'room_type' => $room_type, 'order' => $order, 'order_details' => $order_details));
+                    return Response::json(array('code' => '200', 'message' => 'success', 'room' => $room, 'room_type' => $room_type, 'order' => $order, 'order_details' => $order_details, 'timeinroommin' => $timeinroommin, 'overnightin' => $overnightin, 'overnightout' => $overnightout));
                 }
-                return Response::json(array('code' => '200', 'message' => 'success', 'room' => $room, 'room_type' => $room_type, 'order' => null, 'order_details' => null));
+                return Response::json(array('code' => '200', 'message' => 'success', 'room' => $room, 'room_type' => $room_type, 'order' => null, 'order_details' => null, 'timeinroommin' => null, 'overnightin' => null, 'overnightout' => null));
             }
         }
         return Response::json(array('code' => '404', 'message' => 'unsuccess', 'orders' => null));
