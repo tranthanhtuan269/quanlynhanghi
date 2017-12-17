@@ -26,6 +26,7 @@ Route::resource('hotel', 'HotelController');
 Route::post('addorder', 'RoomController@addOrder');
 Route::post('editorder', 'RoomController@editOrder');
 Route::post('payorder', 'RoomController@payOrder');
+Route::get('test', 'RoomController@test');
 Route::get('getroominfo', 'RoomController@getroominfo');
 Route::get('getroomtypeinfo', 'RoomTypeController@getRoomTypeInfo');
 Route::get('getserviceinfo', 'ServiceController@getServiceInfo');

@@ -223,9 +223,13 @@ class RoomController extends Controller
 
             // remove all order_detail of order
             DB::table('order_detail')->where('order_id', '=', $input['order_id'])->delete();
-
+            $room_services = $input['room_services'];
+            if($room_services[0] == ","){
+                $room_services = ltrim($room_services, ',');
+            }
             // store order_detail
-            $data_list = json_decode('['.$input['room_services'].']');
+            $data_list = json_decode('['.$room_services.']');
+
             if(count($data_list) > 0){
                 foreach ($data_list as $data) {
                     $order_detail = new Order_Detail;
@@ -276,18 +280,34 @@ class RoomController extends Controller
 
                 $room_type = DB::table('room_type')->select('*')->where('id', '=', $room->room_type)->first();
 
-                $timeout = \Auth::user()->houroutroom;
-                $to_time = strtotime(date("Y-m-d H:i:s"));
-                $from_time = strtotime($room->updated_at);
-                $diff_time = round(abs($to_time - $from_time) / 3600);
+                // get system time out room
+                $overnightout = \Auth::user()->overnightout;
+                // get system time in room
+                $overnightin = \Auth::user()->overnightin;
+                // gio vao
+                $in_room = new \DateTime($order->created_at);
+                $in_room_TS         = $in_room->getTimestamp();
+                // gio vao cua he thong
+                $in_room_system = $in_room;
+                $in_room_system->setTime($overnightin, 00);
+                $in_room_system_TS  = $in_room_system->getTimestamp();
+                // gio ra
+                $out_room = new \DateTime(date("Y-m-d H:i:s"));
+                $out_room_TS        = $out_room->getTimestamp();
+                // gio ra cua he thong
+                $out_room_system = $in_room;
+                date_modify($out_room_system, '+1 day');
+                $out_room_system->setTime($overnightout, 00);
+                $out_room_system_TS = $out_room_system->getTimestamp();
 
-                $to_time_2 = strtotime(date("Y-m-d ". $timeout .":i:s"));
-                $diff_time_2 = round(abs($to_time_2 - $from_time) / 3600);
+                $diff_time          = round(abs($out_room_TS - $in_room_TS) / 3600);
+                $diff_time_2        = round(($out_room_TS - $out_room_system_TS) / 3600);
+                $diff_time_3        = round(($in_room_system_TS - $in_room_TS) / 3600);
 
                 if($room_type == null){
                     $price_order += 0;
                 }else{
-                    $price_order += $this->getPriceRoom($room->order_type, $diff_time, $diff_time_2, $room_type);
+                    $price_order += $this->getPriceRoom($room->order_type, $diff_time, $diff_time_2, $diff_time_3, $room_type);
                 }
 
                 $order->price_order = $price_order;
@@ -313,42 +333,58 @@ class RoomController extends Controller
         return Response::json(array('code' => '404', 'message' => 'unsuccess'));
     }
 
-    function getPriceRoom($order_type, $diff_time, $diff_time_2, $room_type){
+    function getPriceRoom($order_type, $diff_time, $diff_time_2, $diff_time_3, $room_type){
+        $pay                = 0;
+        $timeinroommin      = \Auth::user()->timeinroommin;
+        $priceinroom        = $room_type->priceinroom;
+        $priceahour         = $room_type->priceahour;
+        $priceovernight     = $room_type->priceovernight;
+        $priceaday          = $room_type->priceaday;
+        $priceaweek         = $room_type->priceaweek;
+        $priceamonth        = $room_type->priceamonth;
+
         if($order_type == 0){
             // nghi gio
-            if($diff_time <= \Auth::user()->timeinroommin){ // có chỗ nghỉ tính 2h
-                return $room_type->priceinroom;
+            if($diff_time <= $timeinroommin){ // có chỗ nghỉ tính 2h
+                $pay = $priceinroom;
             }else{
-                return $room_type->priceinroom + $room_type->priceahour * ($diff_time - \Auth::user()->timeinroommin);
+                $pay = $priceinroom + $priceahour * ($diff_time - $timeinroommin);
             }
         }else if($order_type == 1){
             // qua dem
-            if($diff_time_2 <= 0){
-                return $room_type->priceovernight;
-            }else{
-                return $room_type->priceovernight + $room_type->priceahour * ($diff_time_2);
+            if($diff_time_3 > 0){
+                // vao som
+                $pay += $priceahour * $diff_time_3;
+            }
+
+            $pay += $priceovernight;
+
+            if($diff_time_2 > 0){
+                // ra muon
+                $pay += $priceahour * ($diff_time_2 + 1);
             }
         }else if($order_type == 2){
             // nghi ngay
             if($diff_time <= 24){
-                return $room_type->priceaday;
+                $pay = $priceaday;
             }else{
-                return $room_type->priceaday + $room_type->priceahour * ($diff_time - 24);
+                $pay = $priceaday + $priceahour * ($diff_time - 24);
             }
         }else if($order_type == 3){
             // nghi tuan
             if($diff_time <= 168){
-                return $room_type->priceaweek;
+                $pay = $priceaweek;
             }else{
-                return $room_type->priceaweek + $room_type->priceahour * ($diff_time - 168);
+                $pay = $priceaweek + $priceahour * ($diff_time - 168);
             }
         }else if($order_type == 4){
             // nghi thang
             if($diff_time <= 720){
-                return $room_type->priceamonth;
+                $pay = $priceamonth;
             }else{
-                return $room_type->priceamonth + $room_type->priceahour * ($diff_time - 720);
+                $pay = $priceamonth + $priceahour * ($diff_time - 720);
             }
         }
+        return $pay;
     }
 }

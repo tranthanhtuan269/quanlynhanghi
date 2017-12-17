@@ -153,7 +153,7 @@
 		          	<table class="table" id="service-table">
 					  <thead>
 					    <tr>
-					      <th>#</th>
+					      <th></th>
 					      <th>Tên dịch vụ</th>
 					      <th>Số lượng</th>
 					      <th>Thành tiền</th>
@@ -341,59 +341,67 @@
 				  				// timeEnd = now
 				  				// timeStart = order.created_at
 				  				var timeStart = new Date(order.created_at);
+				  				var timeStart2 = new Date(order.created_at);
+				  				var timeStart3 = new Date(order.created_at);
+				  				// thoi gian ra
+				  				timeStart2.setHours(overnightout);
+				  				timeStart2.setDate(timeStart2.getDate() + 1);
+				  				// thoi gian vao
+				  				timeStart3.setHours(overnightin);
 				  				var timeEnd = new Date();
 				  				var diffTime = Math.round((timeEnd - timeStart)/60/60/1000);
+				  				var diffTime2 = Math.round((timeEnd - timeStart2)/60/60/1000);
+				  				var diffTime3 = Math.round((timeStart3 - timeStart)/60/60/1000);
+				  				console.log(diffTime3);
 				  				
 					  			$('input[name="typeOrder"][value="' + room.order_type + '"]').prop('checked', true);
 					  			var countRow = 1;
 					  			// show value for room
 			  					// nghi gio
-				  				add_data += "<tr class='detail-room-price detail-room-price-hour' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceinroom + "'>" + Number(room_type.priceinroom).toLocaleString('en') + "</span></td><td></td></tr>";
+				  				add_data += "<tr class='detail-room-price detail-room-price-hour' data-id='0' data-number='0'><td></td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceinroom + "'>" + Number(room_type.priceinroom).toLocaleString('en') + "</span></td><td></td></tr>";
 				  				total_order_price_hour += room_type.priceinroom;
 				  				if(diffTime - timeinroommin > 0){
-				  					countRow++;
-				  					add_data += "<tr class='detail-room-price detail-room-price-hour' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng quá giờ</td><td>" + (diffTime - timeinroommin) + "</td><td><span class='price' data-price='" + (room_type.priceahour * (diffTime - timeinroommin)) + "'>" + Number((room_type.priceahour * (diffTime - timeinroommin))).toLocaleString('en') + "</span></td><td></td></tr>";
+				  					add_data += "<tr class='detail-room-price detail-room-price-hour' data-id='0' data-number='0'><td></td><td>Tiền phòng quá giờ</td><td>" + (diffTime - timeinroommin) + "</td><td><span class='price' data-price='" + (room_type.priceahour * (diffTime - timeinroommin)) + "'>" + Number((room_type.priceahour * (diffTime - timeinroommin))).toLocaleString('en') + "</span></td><td></td></tr>";
 				  					total_order_price_hour += room_type.priceahour * (diffTime - timeinroommin);
 				  				}
 
 				  				// nghi dem
 				  				// vao som
-				  				if(timeStart.getHours() < overnightin){
-				  					add_data += "<tr class='detail-room-price detail-room-price-night' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng vào sớm</td><td>" + (overnightin - timeStart.getHours()) + "</td><td><span class='price' data-price='" + (room_type.priceahour * (overnightin - timeStart.getHours())) + "'>" + Number(room_type.priceahour * (overnightin - timeStart.getHours())).toLocaleString('en') + "</span></td><td></td></tr>";
+				  				if(diffTime3 > 0){
+				  					add_data += "<tr class='detail-room-price detail-room-price-night' data-id='0' data-number='0'><td></td><td>Tiền phòng vào sớm</td><td>" + (overnightin - timeStart.getHours()) + "</td><td><span class='price' data-price='" + (room_type.priceahour * (overnightin - timeStart.getHours())) + "'>" + Number(room_type.priceahour * (overnightin - timeStart.getHours())).toLocaleString('en') + "</span></td><td></td></tr>";
 				  					total_order_price_night += room_type.priceahour * (overnightin - timeStart.getHours());
 				  				}
 				  				// tien phong
-				  				add_data += "<tr class='detail-room-price detail-room-price-night' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceovernight + "'>" + Number(room_type.priceovernight).toLocaleString('en') + "</span></td><td></td></tr>";
+				  				add_data += "<tr class='detail-room-price detail-room-price-night' data-id='0' data-number='0'><td></td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceovernight + "'>" + Number(room_type.priceovernight).toLocaleString('en') + "</span></td><td></td></tr>";
 				  				total_order_price_night += room_type.priceovernight;
 				  				// ra muon
-				  				if((timeEnd.getHours() - overnightout + 1) > 0 && diffTime < 24){
-				  					countRow++;
-					  				add_data += "<tr class='detail-room-price detail-room-price-night' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng quá giờ</td><td>" + (timeEnd.getHours() - overnightout + 1) + "</td><td><span class='price' data-price='" + (room_type.priceahour * (timeEnd.getHours() - overnightout + 1)) + "'>" + Number(room_type.priceahour * (timeEnd.getHours() - overnightout + 1)).toLocaleString('en') + "</span></td><td></td></tr>";
-					  				total_order_price_night += room_type.priceahour * (timeEnd.getHours() - overnightout + 1);
+				  				if(diffTime2 > 0){
+					  				add_data += "<tr class='detail-room-price detail-room-price-night' data-id='0' data-number='0'><td></td><td>Tiền phòng quá giờ</td><td>" + (diffTime2 + 1) + "</td><td><span class='price' data-price='" + (room_type.priceahour * (diffTime2 + 1)) + "'>" + Number(room_type.priceahour * (diffTime2 + 1)).toLocaleString('en') + "</span></td><td></td></tr>";
+					  				total_order_price_night += room_type.priceahour * (diffTime2 + 1);
 					  			}
 
 				  				// nghi ngay
-				  				add_data += "<tr class='detail-room-price detail-room-price-day' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceaday + "'>" + Number(room_type.priceaday).toLocaleString('en') + "</span></td><td></td></tr>";
+				  				add_data += "<tr class='detail-room-price detail-room-price-day' data-id='0' data-number='0'><td></td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceaday + "'>" + Number(room_type.priceaday).toLocaleString('en') + "</span></td><td></td></tr>";
 				  				total_order_price_day += room_type.priceaday;
 				  				if(diffTime > 24){
-				  					add_data += "<tr class='detail-room-price detail-room-price-day' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng quá giờ</td><td>" + (diffTime - 24) + "</td><td><span class='price' data-price='" + ((diffTime - 24) * room_type.priceahour) + "'>" + Number((diffTime - 24) * room_type.priceahour).toLocaleString('en') + "</span></td><td></td></tr>";
+				  					add_data += "<tr class='detail-room-price detail-room-price-day' data-id='0' data-number='0'><td></td><td>Tiền phòng quá giờ</td><td>" + (diffTime - 24) + "</td><td><span class='price' data-price='" + ((diffTime - 24) * room_type.priceahour) + "'>" + Number((diffTime - 24) * room_type.priceahour).toLocaleString('en') + "</span></td><td></td></tr>";
 				  					total_order_price_day += (diffTime - 24) * room_type.priceahour;
 				  				}
 
 				  				// nghi tuan
-				  				add_data += "<tr class='detail-room-price detail-room-price-week' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceaweek + "'>" + Number(room_type.priceaweek).toLocaleString('en') + "</span></td><td></td></tr>";
+				  				add_data += "<tr class='detail-room-price detail-room-price-week' data-id='0' data-number='0'><td></td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceaweek + "'>" + Number(room_type.priceaweek).toLocaleString('en') + "</span></td><td></td></tr>";
 				  				total_order_price_week += room_type.priceaweek;
 				  				if(diffTime > 168){
-				  					add_data += "<tr class='detail-room-price detail-room-price-week' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng quá giờ</td><td>" + (diffTime - 168) + "</td><td><span class='price' data-price='" + ((diffTime - 168) * room_type.priceahour) + "'>" + Number((diffTime - 168) * room_type.priceahour).toLocaleString('en') + "</span></td><td></td></tr>";
+				  					add_data += "<tr class='detail-room-price detail-room-price-week' data-id='0' data-number='0'><td></td><td>Tiền phòng quá giờ</td><td>" + (diffTime - 168) + "</td><td><span class='price' data-price='" + ((diffTime - 168) * room_type.priceahour) + "'>" + Number((diffTime - 168) * room_type.priceahour).toLocaleString('en') + "</span></td><td></td></tr>";
 				  					total_order_price_week += (diffTime - 168) * room_type.priceahour;
 				  				}
 
 					  			if(room.order_type == 4 || true){
 					  				// nghi thang
-					  				add_data += "<tr class='detail-room-price detail-room-price-month' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceamonth + "' data-price='" + room_type.priceamonth + "'>" + Number(room_type.priceamonth).toLocaleString('en') + "</span></td><td></td></tr>";
+					  				add_data += "<tr class='detail-room-price detail-room-price-month' data-id='0' data-number='0'><td></td><td>Tiền phòng</td><td>1</td><td><span class='price' data-price='" + room_type.priceamonth + "' data-price='" + room_type.priceamonth + "'>" + Number(room_type.priceamonth).toLocaleString('en') + "</span></td><td></td></tr>";
 					  				total_order_price_month += room_type.priceamonth;
 					  				if(diffTime > 720){
-					  					add_data += "<tr class='detail-room-price detail-room-price-month' data-id='0' data-number='0'><td>" + countRow + "</td><td>Tiền phòng quá giờ</td><td>" + (diffTime - 720) + "</td><td><span class='price' data-price='" + ((diffTime - 720) * room_type.priceahour) + "'>" + Number((diffTime - 720) * room_type.priceahour).toLocaleString('en') + "</span></td><td></td></tr>";
+					  					add_data += "<tr class='detail-room-price detail-room-price-month' data-id='0' data-number='0'><td></td><td>Tiền phòng quá giờ</td><td>" + (diffTime - 720) + "</td><td><span class='price' data-price='" + ((diffTime - 720) * room_type.priceahour) + "'>" + Number((diffTime - 720) * room_type.priceahour).toLocaleString('en') + "</span></td><td></td></tr>";
 					  					total_order_price_month += (diffTime - 720) * room_type.priceahour;
 					  				}
 					  			}
@@ -414,7 +422,7 @@
 					  			if(order.state == 1){
 					  				if(order_details.length > 0 ){
 					  					for (var i = 0; i < order_details.length; i++) {
-					  						add_data += "<tr class='service-pick' data-id='" + order_details[i].id + "' data-number='" + order_details[i].number_count + "' data-price='" + order_details[i].price + "'><td>" + (i + 2) + "</td><td>" + order_details[i].name + "</td><td>" + order_details[i].number_count +"</td><td>" + Number((order_details[i].price * order_details[i].number_count)).toLocaleString('en') + "</td><td><i class='glyphicon glyphicon-remove-circle delete-service'></i></td></tr>";
+					  						add_data += "<tr class='service-pick' data-id='" + order_details[i].id + "' data-number='" + order_details[i].number_count + "' data-price='" + order_details[i].price + "'><td></td><td>" + order_details[i].name + "</td><td>" + order_details[i].number_count +"</td><td>" + Number((order_details[i].price * order_details[i].number_count)).toLocaleString('en') + "</td><td><i class='glyphicon glyphicon-remove-circle delete-service'></i></td></tr>";
 					  						total_order_price += (order_details[i].price * order_details[i].number_count);
 					  					}
 					  				}

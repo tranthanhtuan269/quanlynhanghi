@@ -163,7 +163,7 @@ class OrderController extends Controller
             if(strlen($date_selected) >= 8 && strlen($date_selected) <= 10){
                 $date_find = explode("/",$date_selected);
                 $date_processed = $date_find[2].'-'.$date_find[1].'-'.$date_find[0];
-                $sql = 'SELECT updated_at as created_at, room_name, price_order FROM orders where created_by = '. $current_id .' and (updated_at >= "'.$date_processed.' 00:00:00" AND updated_at <= "'.$date_processed.' 23:59:59")';
+                $sql = 'SELECT updated_at as created_at, room_name, price_order FROM orders where created_by = '. $current_id .' and (updated_at >= "'.$date_processed.' 00:00:00" AND updated_at <= "'.$date_processed.' 23:59:59") order by updated_at ASC';
                 
                 $order_list = DB::select($sql);
                 return Response::json(array('code' => '200', 'message' => 'success', 'order_list' => $order_list));
