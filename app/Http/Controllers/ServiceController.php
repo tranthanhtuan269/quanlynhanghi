@@ -36,6 +36,7 @@ class ServiceController extends Controller
         $services = \DB::select($sql);
         $listService = "";
         $resource = array();
+        $XList = array();
         $YList = array();
         $number_day = 30;
         
