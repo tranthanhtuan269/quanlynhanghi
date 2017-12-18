@@ -38,6 +38,9 @@ Route::get('/user/{id}/postImages', function () {
     return view('user.images');
 });
 
+Route::get('/settings', function () {
+    return view('user.settings');
+});
 Route::get('/user/{id}', function () {
     return view('user.edit');
 });
