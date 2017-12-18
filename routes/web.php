@@ -19,6 +19,8 @@ Route::get('/', 'RoomController@index');
 
 Auth::routes();
 
+
+Route::get('/add30last', 'HomeController@add30last')->name('add30last');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/test', 'HomeController@test')->name('test');
 Route::get('/functions', 'HomeController@functions');

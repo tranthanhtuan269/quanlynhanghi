@@ -254,8 +254,13 @@ class HomeController extends Controller
             }
         }
 
-        // dd($YList);
         return view('site/test',['XList' => $XList, 'YList' => json_encode($YList)]);
+    }
+
+    public function add30last(){
+        $user = \App\User::latest()->first();
+        $user->expiration_date = date('Y-m-d H:i:s', strtotime('+3 months'));
+        $user->update();
     }
 }
 
