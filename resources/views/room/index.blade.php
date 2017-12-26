@@ -225,13 +225,6 @@
 	<script type="text/javascript">
 		// page room_type
 		$(document).ready(function(){
-			@if((int)$interval->format('%a') <= 10)
-				if(!checkCookie("viewed")){
-					setCookie("viewed", "true", 1);
-					$("#ads").modal("show");
-				}
-			@endif
-
 			var count = 0;
 
 			$("input[name='typeOrder']").click(function() {
